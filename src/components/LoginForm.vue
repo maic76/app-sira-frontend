@@ -1,8 +1,7 @@
 <template>
 	<v-main>
 		<v-card width="500" class="mx-auto mt-9" elevation="17">
-			<v-img
-			      
+			<v-img			      
          		  contain
           		  height="200"
 			      :src="require('../assets/logo-lania.jpg')"
@@ -27,15 +26,16 @@
 				    ></v-text-field>
 					
 				</v-form>
-				<v-card-actions>
+				
+			</v-card-text>
+			<v-card-actions>
    					 <v-btn 
    					 :disabled="!valid"
 					      color="indigo darken-2"
-					      class="mr-4"
+					      class="mx-auto"
 					      @click="validate"					    
 					      >Ingresar</v-btn>
 				</v-card-actions>
-			</v-card-text>
 		</v-card>
 	</v-main>
 </template>
