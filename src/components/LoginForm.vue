@@ -29,12 +29,15 @@
 				
 			</v-card-text>
 			<v-card-actions>
-   					 <v-btn 
+					<router-link to="/home">
+						<v-btn 
    					 :disabled="!valid"
 					      color="indigo darken-2"
 					      class="mx-auto"
 					      @click="validate"					    
 					      >Ingresar</v-btn>
+					</router-link>
+   					 
 				</v-card-actions>
 		</v-card>
 	</v-main>
