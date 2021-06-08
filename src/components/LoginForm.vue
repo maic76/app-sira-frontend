@@ -1,11 +1,7 @@
 <template>
 	<v-main>
-		<v-card width="500" class="mx-auto mt-9" elevation="17">
-			<v-img			      
-         		  contain
-          		  height="200"
-			      :src="require('../assets/logo-lania.jpg')"
-			    ></v-img>
+		<v-card class="px-4">
+			
 			<v-card-title >Ingresar</v-card-title>
 			<v-card-text>
 				<v-form ref="form" v-model="valid" lazy-validation  >		  
