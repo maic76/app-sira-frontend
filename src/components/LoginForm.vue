@@ -1,30 +1,24 @@
 <template>
 	<v-main>
-		<v-card class="px-4">
-			
+		<v-card class="px-4">			
 			<v-card-title >Ingresar</v-card-title>
 			<v-card-text>
-				<v-form ref="form" v-model="valid" lazy-validation  >		  
-
-				    <v-text-field
-				      v-model="email"
-				      :rules="emailRules"
-				      label="Dirección de Correo:"
-				      required
-				    ></v-text-field>
-				     <v-text-field
-				      v-model="password"
-				      :counter="6"
-				      :rules="passwordRules"
-				      label="Contraseña:"
-				       type="password"
-				      required
-				    ></v-text-field>
-					
-				</v-form>
-				
+				<v-form ref="loginForm" v-model="valid" lazy-validation  >		  
+					 <v-row>
+                        <v-col cols="12">
+                        	 <v-text-field v-model="email" :rules="emailRules" label="Dirección de Correo:" required></v-text-field>
+                        </v-col>
+				   		 <v-col cols="12">
+				   		 	<v-text-field v-model="password" :counter="6" :rules="passwordRules" label="Contraseña:" type="password" required></v-text-field> 
+				   		 </v-col>
+				   		 <v-spacer></v-spacer>
+                         <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
+                             <v-btn x-large block :disabled="!valid" color="success" @click="validate"> Ingresar </v-btn>
+                        </v-col>				    
+					</v-row>	
+				</v-form>				
 			</v-card-text>
-			<v-card-actions>
+		<!-- 	<v-card-actions>
 					<router-link to="/home">
 						<v-btn 
    					 :disabled="!valid"
@@ -34,7 +28,7 @@
 					      >Ingresar</v-btn>
 					</router-link>
    					 
-				</v-card-actions>
+				</v-card-actions> -->
 		</v-card>
 	</v-main>
 </template>
@@ -57,19 +51,21 @@
 		      emailRules: [
 		        v => !!v || 'El correo es requerido',
 		        v => /.+@.+\..+/.test(v) || 'Debe ingresar un correo válido',
-		      ],
-		      checkbox: false,
+		      ],		     
 		    }),
 
 		    methods: {
 		      validate () {
-		        this.$refs.form.validate()
+		         if (this.$refs.loginForm.validate()) {
+			        // submit form to server/API here...
+			        console.log("entrando a validar login");
+			      }
 		      },
 		      reset () {
-		        this.$refs.form.reset()
+		        this.$refs.loginForm.reset()
 		      },
 		      resetValidation () {
-		        this.$refs.form.resetValidation()
+		        this.$refs.loginForm.resetValidation()
 		      },
 		    },
  }
