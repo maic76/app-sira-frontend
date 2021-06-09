@@ -9,7 +9,7 @@
                          	<v-text-field v-model="nombre" :rules="[rules.required]" label="Nombre" maxlength="20" required></v-text-field>
                          </v-col>
                           <v-col cols="12" sm="6" md="6">
-                         	<v-text-field v-model="apellidos" :rules="[rules.required]" label="Apellidos" maxlength="60" required></v-text-field>
+                         	<v-text-field v-model="apellido" :rules="[rules.required]" label="Apellidos" maxlength="60" required></v-text-field>
                          </v-col>
                           <v-col cols="12" sm="6" md="6">
                          	<v-text-field v-model="escuela" :rules="[rules.required]" label="Escuela de procedencia:" maxlength="40" required></v-text-field>
@@ -39,13 +39,14 @@
 </template>
 
 <script type="text/javascript">
+	import {axios} from "axios";
 
  export default {
  
 	   data: () => ({
 		      	valid: true,
 		    	nombre: "",		      
-		        apellidos:"", 
+		        apellido:"", 
 		      	checkbox: false,
 		      	email: "",
 		      	nowhatsapp: "",
@@ -72,14 +73,30 @@
 			      if (this.$refs.form.validate()) {
 			        // submit form to server/API here...
 			         console.log("entrando a registrar");
-			      }
+			         this.axios.post('/sira/usuarios', {
+								    nombre: this.nombre,
+								    apellido: this.apellido,
+								    email: this.email,
+								    escuela: this.escuela,
+								    noWhatsapp: this.nowhatsapp,
+								    password: this.password 
+								  })
+								  .then(function (response) {
+								    console.log(response);
+								     this.$swal('Hello Vue world!!!');
+								  })
+								  .catch(function (error) {
+								    console.log(error);
+								 });
+			      		}
 			    },
 			    reset() {
 			      this.$refs.form.reset();
 			    },
 			    resetValidation() {
 			      this.$refs.form.resetValidation();
-			    }
+			    },
+
 		    },
  }
 
