@@ -1,6 +1,7 @@
 <template>
   <v-app>
     <v-main>
+       <button @click="showAlert">Hello world</button>
     	 <v-parallax
     dark
     contain
@@ -24,5 +25,11 @@ export default {
   data: () => ({
     
   }),
+    methods: {
+    showAlert() {
+      // Use sweetalert2
+      this.$swal('Hello Vue world!!!');
+    },
+  },
 };
 </script>

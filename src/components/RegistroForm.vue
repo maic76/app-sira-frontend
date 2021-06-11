@@ -41,6 +41,7 @@
 <script type="text/javascript">
 	import {axios} from "axios";
 
+
  export default {
  
 	   data: () => ({
@@ -73,7 +74,7 @@
 			      if (this.$refs.form.validate()) {
 			        // submit form to server/API here...
 			         console.log("entrando a registrar");
-			         this.axios.post('/sira/usuarios', {
+			       /*  this.axios.post('/sira/usuarios', {
 								    nombre: this.nombre,
 								    apellido: this.apellido,
 								    email: this.email,
@@ -88,6 +89,31 @@
 								  .catch(function (error) {
 								    console.log(error);
 								 });
+*/
+
+					 this.axios.post("/sira/usuarios", {
+								    nombre: this.nombre,
+								    apellido: this.apellido,
+								    email: this.email,
+								    escuela: this.escuela,
+								    noWhatsapp: this.nowhatsapp,
+								    password: this.password 
+								  })
+						    .then(response => {
+						    	 console.log(response);
+						    	 this.$swal({										 
+										  position: 'center',
+							                type: 'success',
+							                title: 'Se ha enviado un correo para confirmar su cuenta',
+							                showConfirmButton: true,								  
+    									
+										  //timer: 1500
+										})
+						    	})
+						    .catch(error => {
+						      this.errorMessage = error.message;
+						      console.error("There was an error!", error);
+						    });
 			      		}
 			    },
 			    reset() {
