@@ -34,6 +34,7 @@
 </template>
 
 <script type="text/javascript">
+		import {axios} from "axios";
 
  export default {
  
@@ -43,7 +44,7 @@
 		      passwordRules: [
 		        v => !!v || 'La contraseña es requerida',
 		        v => (v && v.length >= 6) || 'La contraseña debe tener al menos 6 caracteres',
-		         v => /(?=.*[A-Z])/.test(v) || 'Debe tener al menos una mayúscula',
+		         //v => /(?=.*[A-Z])/.test(v) || 'Debe tener al menos una mayúscula',
 			    v => /(?=.*\d)/.test(v) || 'Debe tener al menos un número',
 			   // v => /([!@$%])/.test(v) || 'Debe contener un caracter especial [!@#$%]'
 			      ],
@@ -59,6 +60,21 @@
 		         if (this.$refs.loginForm.validate()) {
 			        // submit form to server/API here...
 			        console.log("entrando a validar login");
+			        this.axios.post("/login", {								   
+								    email: this.email,								   
+								    password: this.password 
+								  })
+						    .then(response => {
+						    	 console.log(response);
+						    	 console.log(response.headers.authorization);
+		      					localStorage.setItem('token',response.headers.authorization.replace('Bearer ',''));	
+		      					this.$router.push('/home');					    	
+						    	})
+						    .catch(error => {
+						      this.errorMessage = error.message;
+						      console.error("There was an error!", error);
+						    });		       		
+
 			      }
 		      },
 		      reset () {
