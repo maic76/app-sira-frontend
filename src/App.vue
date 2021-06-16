@@ -1,15 +1,10 @@
 <template>
   <v-app>
     <v-main>
+      <v-container fluid>
       <!--  <button @click="showAlert">Hello world</button> -->
-    	 <v-parallax
-    dark
-    contain
-    src="https://cdn.vuetifyjs.com/images/backgrounds/vbanner.jpg"
-  >	
-	  
        <router-view/>
-   </v-parallax>
+       </v-container>
     </v-main>
   </v-app>
 </template>

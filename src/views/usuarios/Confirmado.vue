@@ -1,7 +1,7 @@
 
 
 <template>
-  <v-card class="mx-auto" width="400px" elevation="19" >
+  <v-card class="mx-auto mt-10" width="400px" elevation="19" >
   	<div class="indigo accent-4 text-center">
   <v-card-title >
     <span class="white--text">Registro confirmado</span>
