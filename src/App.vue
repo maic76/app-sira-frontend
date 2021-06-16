@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-       <button @click="showAlert">Hello world</button>
+      <!--  <button @click="showAlert">Hello world</button> -->
     	 <v-parallax
     dark
     contain
