@@ -265,6 +265,24 @@
       },
 
       save () {
+        //TODO ....
+
+         /* console.log("entrando a guardar programa educativo");
+              this.axios.post("/api/progeducativos", {                  
+                    nombre: this.editedItem.nombre,                   
+                    password: this.password 
+                  })
+                .then(response => {
+                   console.log(response);
+                   console.log(response.headers.authorization);
+                    localStorage.setItem('token',response.headers.authorization.replace('Bearer ','')); 
+                    this.$router.push('/home');               
+                  })
+                .catch(error => {
+                  this.errorMessage = error.message;
+                  console.error("There was an error!", error);
+                });             
+*/
         if (this.editedIndex > -1) {
           Object.assign(this.programas[this.editedIndex], this.editedItem)
         } else {
