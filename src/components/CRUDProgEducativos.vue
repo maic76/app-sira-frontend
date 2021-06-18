@@ -141,7 +141,9 @@
   </v-data-table>
 </template>
 <script>
-      import {axios} from "axios";
+
+  import {axios} from "axios";
+
   export default {
     data: () => ({
       dialog: false,
@@ -219,38 +221,7 @@
                   this.errorMessage = error.message;
                   console.error("There was an error!", error);
                 });                   
-/*
-        this.programas = [
-          {
-            nombre: 'Maestría en Computación Aplicada',
-            descripcion: "Adquiere conocimientos avanzados en tecnologías emergentes: Ingeniería de Software, Sistemas Distribuidos, Bases de Datos, inteligencia artificial y TIC’s en la educación.",
-            clave: 'MCA-2941',
-            vigencia: 'Julio-2029',
-            abreviatura: 'MCA',
-          },
-          {
-            nombre: 'Maestría en Redes y Sistemas Integrados Presencial',
-            descripcion: "Adquiere una visión integral y sólida en el uso de la tecnología para: la construcción y diseño de sistemas computacionales, el manejo de datos y la administración de redes." ,
-            clave: 'MRYSI-020MEP',
-            vigencia: 'Mayo-2028',
-            abreviatura: 'MRYSI-P',
-          },
-          {
-            nombre: 'Diplomado en Programacion Avanzada',
-            descripcion: "En este diplomado se utilizará el lenguaje de programación JAVA y un framework MVC para el desarrollo de aplicaciones web interactivas y responsivas",
-            clave: 'DPA-12001',
-            vigencia: 'Mayo-2028',
-            abreviatura: 'DPA',
-          },
-          {
-            nombre: 'Maestría en Redes y Sistemas Integrados en Línea',
-            descripcion: "Adquiere una visión integral y sólida en el uso de la tecnología para: la construcción y diseño de sistemas computacionales, el manejo de datos y la administración de redes desde la modalidad en Línea a través de las plataformas que te brinda LANIA" ,
-            clave: 'MRYSI-L9310',
-            vigencia: 'Agosto-2029',
-            abreviatura: 'MRYSI-L',
-          },
-         
-        ]*/
+
       },
 
       editItem (item) {
@@ -288,41 +259,47 @@
 
       save () {
         //TODO ....
+           let token = localStorage.getItem('token');
 
-          console.log("entrando a guardar programa educativo");
-          console.log("el token es "+localStorage.getItem('token'));
-          let token = localStorage.getItem('token');
-
-          let bodyParams = {  nombre: this.editedItem.nombre,                   
+           let bodyParams = { 
+                    nombre: this.editedItem.nombre,                   
                     descripcion: this.editedItem.descripcion,
                     clave: this.editedItem.clave,
                     vigencia: this.editedItem.vigencia,
                     abreviatura: this.editedItem.abreviatura 
                   };
 
-          let config = {
-                    headers: { Authorization: `Bearer ${token}` }
-                  };
+           let config = {
+                       headers: { Authorization: `Bearer ${token}` }
+                     };
 
-              this.axios.post("/api/peducativos",                  
-                   bodyParams,
-                   config
-                  )
-                .then(response => {
-                   console.log(response);
-                   console.log(response.headers.authorization);
-                   //actualizamos la vista
-                   if (this.editedIndex > -1) {
-                        Object.assign(this.programas[this.editedIndex], this.editedItem)
-                      } else {
-                        this.programas.push(this.editedItem)
-                      }
-                      this.close()          
-                  })
-                .catch(error => {
-                  this.errorMessage = error.message;
-                  console.error("There was an error!", error);
-                });                   
+             if (this.editedIndex > -1) {  //si es update
+
+                        Object.assign(this.programas[this.editedIndex], this.editedItem);
+                }
+             else {  //si es nuevo
+
+                console.log("entrando a guardar nuevo programa educativo");
+                console.log("el token es "+localStorage.getItem('token'));        
+                
+
+                      this.axios.post("/api/peducativos",                  
+                           bodyParams,
+                           config
+                          )
+                        .then(response => {
+                           console.log(response);
+                           //onsole.log(response.headers.authorization);
+                              //actualizamos la vista
+                              console.log("programa editado ->"+response.data);
+                               this.programas.push(response.data)      
+                          })
+                        .catch(error => {
+                          this.errorMessage = error.message;
+                          console.error("There was an error!", error);
+                        });                                    
+                }                              
+           this.close()              
       },
     },
   }
