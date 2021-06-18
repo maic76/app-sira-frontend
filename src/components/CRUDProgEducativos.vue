@@ -141,6 +141,7 @@
   </v-data-table>
 </template>
 <script>
+      import {axios} from "axios";
   export default {
     data: () => ({
       dialog: false,
@@ -198,6 +199,27 @@
 
     methods: {
       initialize () {
+
+     let token = localStorage.getItem('token');
+         
+     let config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                  };
+
+      this.axios.get("/api/peducativos",           
+                   config
+                  )
+                .then(response => {
+                   console.log(response);
+                   console.log(response.headers.authorization);
+                   //actualizamos la vista
+                     this.programas=response.data;   
+                  })
+                .catch(error => {
+                  this.errorMessage = error.message;
+                  console.error("There was an error!", error);
+                });                   
+/*
         this.programas = [
           {
             nombre: 'Maestría en Computación Aplicada',
@@ -228,7 +250,7 @@
             abreviatura: 'MRYSI-L',
           },
          
-        ]
+        ]*/
       },
 
       editItem (item) {
@@ -267,28 +289,40 @@
       save () {
         //TODO ....
 
-         /* console.log("entrando a guardar programa educativo");
-              this.axios.post("/api/progeducativos", {                  
-                    nombre: this.editedItem.nombre,                   
-                    password: this.password 
-                  })
+          console.log("entrando a guardar programa educativo");
+          console.log("el token es "+localStorage.getItem('token'));
+          let token = localStorage.getItem('token');
+
+          let bodyParams = {  nombre: this.editedItem.nombre,                   
+                    descripcion: this.editedItem.descripcion,
+                    clave: this.editedItem.clave,
+                    vigencia: this.editedItem.vigencia,
+                    abreviatura: this.editedItem.abreviatura 
+                  };
+
+          let config = {
+                    headers: { Authorization: `Bearer ${token}` }
+                  };
+
+              this.axios.post("/api/peducativos",                  
+                   bodyParams,
+                   config
+                  )
                 .then(response => {
                    console.log(response);
                    console.log(response.headers.authorization);
-                    localStorage.setItem('token',response.headers.authorization.replace('Bearer ','')); 
-                    this.$router.push('/home');               
+                   //actualizamos la vista
+                   if (this.editedIndex > -1) {
+                        Object.assign(this.programas[this.editedIndex], this.editedItem)
+                      } else {
+                        this.programas.push(this.editedItem)
+                      }
+                      this.close()          
                   })
                 .catch(error => {
                   this.errorMessage = error.message;
                   console.error("There was an error!", error);
-                });             
-*/
-        if (this.editedIndex > -1) {
-          Object.assign(this.programas[this.editedIndex], this.editedItem)
-        } else {
-          this.programas.push(this.editedItem)
-        }
-        this.close()
+                });                   
       },
     },
   }
