@@ -149,13 +149,8 @@
       dialog: false,
       dialogDelete: false,
       headers: [
-        {
-          text: 'Nombre ',
-          align: 'start',
-          sortable: false,
-          value: 'nombre',
-          class: 'indigo accent-2 white--text text-center'
-        },
+        {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
+        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
         { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
         { text: 'Clave', value: 'clave', class: 'indigo accent-2 white--text' },
         { text: 'Vigencia', value: 'vigencia', class: 'indigo accent-2 white--text' },
@@ -165,6 +160,7 @@
       programas: [],
       editedIndex: -1,
       editedItem: {
+        id:'',
         nombre: '',
         descripcion: '',
         clave: '',
@@ -172,6 +168,7 @@
         abreviatura: '',
       },
       defaultItem: {
+        id: '',
         nombre: '',
         descripcion: '',
         clave: '',
@@ -225,20 +222,55 @@
       },
 
       editItem (item) {
+        //this.editedIndex = this.programas.indexOf(item)
+       /* console.log(item);
+         this.editedIndex = this.programas.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialog = true*/
+
         this.editedIndex = this.programas.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
-        this.editedIndex = this.programas.indexOf(item)
+        /*this.editedIndex = this.programas.indexOf(item)
+        this.editedItem = Object.assign({}, item)
+        this.dialogDelete = true*/
+        this.editedIndex = item.id
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
       deleteItemConfirm () {
-        this.programas.splice(this.editedIndex, 1)
-        this.closeDelete()
+       // this.programas.splice(this.editedIndex, 1)
+           let token = localStorage.getItem('token');
+
+           let bodyParams = { 
+                   
+                  };
+
+           let config = {
+                       headers: { Authorization: `Bearer ${token}` }
+                     };
+
+          let indice = this.editedIndex;
+             this.axios.delete("/api/peducativos/"+this.editedIndex,                  
+                           config
+                          )
+                        .then(response => {
+                           console.log(response);
+                           //onsole.log(response.headers.authorization);
+                              //actualizamos la vista
+                           console.log("programa eliminado ->"+response);                              
+                              this.programas = this.programas.filter(p => p.id != indice)
+                              this.closeDelete()
+                          })
+                        .catch(error => {
+                          this.errorMessage = error.message;
+                          console.error("There was an error!", error);
+                        });     
+      
       },
 
       close () {
@@ -275,7 +307,25 @@
 
              if (this.editedIndex > -1) {  //si es update
 
-                        Object.assign(this.programas[this.editedIndex], this.editedItem);
+                        console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
+                        console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
+                        let indice = this.editedIndex;
+                        this.axios.put("/api/peducativos/"+this.editedItem.id,                  
+                           bodyParams,
+                           config
+                          )
+                        .then(response => {
+                           console.log(response);
+                           //onsole.log(response.headers.authorization);
+                              //actualizamos la vista
+                              console.log("programa editado ->"+response.data);                              
+                              Object.assign(this.programas[indice], response.data);
+                          })
+                        .catch(error => {
+                          this.errorMessage = error.message;
+                          console.error("There was an error!", error);
+                        });     
+                        
                 }
              else {  //si es nuevo
 
