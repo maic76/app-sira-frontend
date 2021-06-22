@@ -152,9 +152,10 @@
         {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
         { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
         { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
-        { text: 'Clave', value: 'clave', class: 'indigo accent-2 white--text' },
-        { text: 'Vigencia', value: 'vigencia', class: 'indigo accent-2 white--text' },
-        { text: 'Abreviatura', value: 'abreviatura', class: 'indigo accent-2 white--text' },
+        { text: 'Fecha Inicio', value: 'fechaInicio', class: 'indigo accent-2 white--text' },
+        { text: 'Fecha Termino', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
+        { text: 'Programa Educativo', value: 'programaEducativo', class: 'indigo accent-2 white--text' },
+        { text: 'Capacidad Asp.', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
       ],
       convocatorias: [],
@@ -179,7 +180,7 @@
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'Nuevo Programa Educativo' : 'Editar Programa Educativo'
+        return this.editedIndex === -1 ? 'Nueva Convocatoria' : 'Editar Convocatoria'
       },
     },
 
@@ -205,7 +206,7 @@
                     headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/peducativos",           
+      this.axios.get("/api/convocatorias",           
                    config
                   )
                 .then(response => {
