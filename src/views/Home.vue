@@ -21,6 +21,7 @@
         <v-list-item
           v-for="item in items"
           :key="item.title"
+          :to="item.link"
           link
         >
           <v-list-item-icon>
@@ -28,7 +29,7 @@
           </v-list-item-icon>
 
           <v-list-item-content>
-            <v-list-item-title>{{ item.title }}</v-list-item-title>
+            <v-list-item-title >{{ item.title }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
       </v-list>
@@ -42,7 +43,7 @@
 
     <v-main>
       <!--  -->
-      <CRUDProgEducativos/>
+      <router-view/>
     </v-main>
 </div>
     
@@ -50,17 +51,17 @@
 </template>
 
 <script>
-   import CRUDProgEducativos from '@/components/CRUDProgEducativos'
+   //import CRUDProgEducativos from '@/components/CRUDProgEducativos'
  export default {
-  components: {
+ /* components: {
       CRUDProgEducativos
-    },
+    },*/
     data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-          { title: 'Convocatorias', icon: 'mdi-image' },
-          { title: 'Programas Educativos', icon: 'mdi-help-box' },
+          { title: 'Dashboard', icon: 'mdi-view-dashboard', link:'' },
+          { title: 'Convocatorias', icon: 'mdi-image', link:'/home/convocatorias' },
+          { title: 'Programas Educativos', icon: 'mdi-help-box', link :'/home/peducativos' },
         ],
         right: null,
         drawer:null

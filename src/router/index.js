@@ -2,6 +2,8 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Ingresar from '../views/usuarios/Ingresar.vue'
 import Confirmado from '@/views/usuarios/Confirmado.vue'
+import CRUDConvocatorias from '@/components/CRUDConvocatorias.vue'
+import CRUDProgEducativos from '@/components/CRUDProgEducativos.vue'
 
 Vue.use(VueRouter)
 
@@ -14,10 +16,21 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue')
+    component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
+       children: [
+        {
+          // UserProfile will be rendered inside User's <router-view>
+          // when /user/:id/profile is matched
+          path: 'convocatorias',
+          component: CRUDConvocatorias
+        },
+        {
+          // UserPosts will be rendered inside User's <router-view>
+          // when /user/:id/posts is matched
+          path: 'peducativos',
+          component: CRUDProgEducativos
+        }
+      ]
   },
   {
     path: '/confirmado',

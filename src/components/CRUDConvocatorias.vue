@@ -1,8 +1,8 @@
 <template>
-  <v-data-table :headers="headers" :items="programas" sort-by="descripcion"  class="elevation-10" >
+  <v-data-table :headers="headers" :items="convocatorias" sort-by="descripcion"  class="elevation-10" >
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
-        <v-toolbar-title >Programas Educativos</v-toolbar-title>
+        <v-toolbar-title >Convocatorias</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -12,7 +12,7 @@
         <v-dialog v-model="dialog" max-width="500px" >
           <template v-slot:activator="{ on, attrs }">
             <v-btn  color="primary"  dark  class="mb-2" v-bind="attrs"  v-on="on" >
-             Crear Nuevo
+             Crear Nueva
             </v-btn>
           </template>
           <v-card>
@@ -157,7 +157,7 @@
         { text: 'Abreviatura', value: 'abreviatura', class: 'indigo accent-2 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
       ],
-      programas: [],
+      convocatorias: [],
       editedIndex: -1,
       editedItem: {
         id:'',
@@ -212,7 +212,7 @@
                    console.log(response);
                    console.log(response.headers.authorization);
                    //actualizamos la vista
-                     this.programas=response.data;   
+                     this.convocatorias=response.data;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;
@@ -222,19 +222,19 @@
       },
 
       editItem (item) {
-        //this.editedIndex = this.programas.indexOf(item)
+        //this.editedIndex = this.convocatorias.indexOf(item)
        /* console.log(item);
-         this.editedIndex = this.programas.indexOf(item)
+         this.editedIndex = this.convocatorias.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true*/
 
-        this.editedIndex = this.programas.indexOf(item)
+        this.editedIndex = this.convocatorias.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
 
       deleteItem (item) {
-        /*this.editedIndex = this.programas.indexOf(item)
+        /*this.editedIndex = this.convocatorias.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true*/
         this.editedIndex = item.id
@@ -243,7 +243,7 @@
       },
 
       deleteItemConfirm () {
-       // this.programas.splice(this.editedIndex, 1)
+       // this.convocatorias.splice(this.editedIndex, 1)
            let token = localStorage.getItem('token');
 
            let bodyParams = { 
@@ -263,7 +263,7 @@
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
                            console.log("programa eliminado ->"+response);                              
-                              this.programas = this.programas.filter(p => p.id != indice)
+                              this.convocatorias = this.convocatorias.filter(p => p.id != indice)
                               this.closeDelete()
                           })
                         .catch(error => {
@@ -319,7 +319,7 @@
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
                               console.log("programa editado ->"+response.data);                              
-                              Object.assign(this.programas[indice], response.data);
+                              Object.assign(this.convocatorias[indice], response.data);
                           })
                         .catch(error => {
                           this.errorMessage = error.message;
@@ -342,7 +342,7 @@
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
                               console.log("programa editado ->"+response.data);
-                               this.programas.push(response.data)      
+                               this.convocatorias.push(response.data)      
                           })
                         .catch(error => {
                           this.errorMessage = error.message;
