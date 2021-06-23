@@ -30,6 +30,21 @@
                     sm="12"
                     md="12"
                   >
+                   <v-select
+                        :items="programas"
+                         v-model="editedItem.programaEducativo"
+                         item-text="nombre"
+                         item-value="id"
+                        label="Programa Educativo"
+                        dense
+                        solo
+                      ></v-select>                  
+                  </v-col>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="12"
+                  >
                     <v-text-field
                       v-model="editedItem.nombre"
                       label="Nombre"
@@ -52,8 +67,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.clave"
-                      label="Clave"
+                      v-model="editedItem.fechaInicio"
+                      label="Fecha Inicio"
                     ></v-text-field>
                   </v-col>
                   <v-col
@@ -63,8 +78,8 @@
                   >
                   <!--  <v-date-picker v-model="editedItem.vigencia"></v-date-picker> -->
                     <v-text-field
-                      v-model="editedItem.vigencia"
-                      label="Vigencia"
+                      v-model="editedItem.fechaTermino"
+                      label="Fecha Termino"
                     ></v-text-field> 
                   </v-col>
                   <v-col
@@ -73,8 +88,8 @@
                     md="4"
                   >
                     <v-text-field
-                      v-model="editedItem.abreviatura"
-                      label="Abreviatura"
+                      v-model="editedItem.cantAspirantes"
+                      label="Cant. de Aspirantes"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -154,7 +169,7 @@
         { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
         { text: 'Fecha Inicio', value: 'fechaInicio', class: 'indigo accent-2 white--text' },
         { text: 'Fecha Termino', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
-        { text: 'Programa Educativo', value: 'programaEducativo', class: 'indigo accent-2 white--text' },
+        { text: 'Programa Educativo', value: 'progEducativoNombre', class: 'indigo accent-2 white--text' },
         { text: 'Capacidad Asp.', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
       ],
@@ -164,18 +179,23 @@
         id:'',
         nombre: '',
         descripcion: '',
-        clave: '',
-        vigencia: '',
-        abreviatura: '',
+        fechaInicio: '',
+        fechaTermino: '',
+        programaEducativo: '',
+        cantAspirantes:''
       },
       defaultItem: {
         id: '',
         nombre: '',
         descripcion: '',
-        clave: '',
-        vigencia: '',
-        abreviatura: '',
+        fechaInicio: '',
+        fechaTermino: '',
+        programaEducativo: '',
+        cantAspirantes:''
       },
+     
+      programas:[],
+         
     }),
 
     computed: {
@@ -211,14 +231,23 @@
                   )
                 .then(response => {
                    console.log(response);
-                   console.log(response.headers.authorization);
+                   //console.log(response.headers.authorization);
                    //actualizamos la vista
                      this.convocatorias=response.data;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;
                   console.error("There was an error!", error);
-                });                   
+                });  
+
+      this.axios.get("/api/peducativos",
+                   config
+                   )
+                  .then(response => {
+                      console.log(response.data);
+                      this.programas = response.data;
+                      
+                  })                 
 
       },
 
@@ -256,14 +285,14 @@
                      };
 
           let indice = this.editedIndex;
-             this.axios.delete("/api/peducativos/"+this.editedIndex,                  
+             this.axios.delete("/api/convocatorias/"+this.editedIndex,                  
                            config
                           )
                         .then(response => {
                            console.log(response);
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
-                           console.log("programa eliminado ->"+response);                              
+                           console.log("convocatoria eliminada ->"+response);                              
                               this.convocatorias = this.convocatorias.filter(p => p.id != indice)
                               this.closeDelete()
                           })
@@ -294,12 +323,14 @@
         //TODO ....
            let token = localStorage.getItem('token');
 
+           let progEducativo = this.editedItem.programaEducativo;
+
            let bodyParams = { 
                     nombre: this.editedItem.nombre,                   
                     descripcion: this.editedItem.descripcion,
-                    clave: this.editedItem.clave,
-                    vigencia: this.editedItem.vigencia,
-                    abreviatura: this.editedItem.abreviatura 
+                    fechaInicio: this.editedItem.fechaInicio,
+                    fechaTermino: this.editedItem.fechaTermino,                   
+                    cantAspirantes: this.editedItem.cantAspirantes                  
                   };
 
            let config = {
@@ -311,7 +342,7 @@
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
-                        this.axios.put("/api/peducativos/"+this.editedItem.id,                  
+                        this.axios.put("/api/convocatorias/"+this.editedItem.id+"?idProgEducativo="+progEducativo,                  
                            bodyParams,
                            config
                           )
@@ -319,7 +350,7 @@
                            console.log(response);
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
-                              console.log("programa editado ->"+response.data);                              
+                              console.log("convocatoria editada ->"+response.data);                              
                               Object.assign(this.convocatorias[indice], response.data);
                           })
                         .catch(error => {
@@ -330,11 +361,11 @@
                 }
              else {  //si es nuevo
 
-                console.log("entrando a guardar nuevo programa educativo");
+                console.log("entrando a guardar nueva convocatoria");
                 console.log("el token es "+localStorage.getItem('token'));        
                 
 
-                      this.axios.post("/api/peducativos",                  
+                      this.axios.post("/api/convocatorias?idProgEducativo="+progEducativo,                  
                            bodyParams,
                            config
                           )
@@ -342,7 +373,7 @@
                            console.log(response);
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
-                              console.log("programa editado ->"+response.data);
+                              console.log("convocatoria editada ->"+response.data);
                                this.convocatorias.push(response.data)      
                           })
                         .catch(error => {
