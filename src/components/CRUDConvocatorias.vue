@@ -169,7 +169,7 @@
         { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
         { text: 'Fecha Inicio', value: 'fechaInicio', class: 'indigo accent-2 white--text' },
         { text: 'Fecha Termino', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
-        { text: 'Programa Educativo', value: 'progEducativoNombre', class: 'indigo accent-2 white--text' },
+        { text: 'Programa Educativo', value: 'programaEducativo.nombre', class: 'indigo accent-2 white--text' },
         { text: 'Capacidad Asp.', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
       ],
@@ -323,7 +323,7 @@
         //TODO ....
            let token = localStorage.getItem('token');
 
-           let progEducativo = this.editedItem.programaEducativo;
+           
 
            let bodyParams = { 
                     nombre: this.editedItem.nombre,                   
@@ -339,6 +339,7 @@
 
              if (this.editedIndex > -1) {  //si es update
 
+                        let progEducativo = this.editedItem.programaEducativo.id;
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
@@ -360,7 +361,7 @@
                         
                 }
              else {  //si es nuevo
-
+                let progEducativo = this.editedItem.programaEducativo;
                 console.log("entrando a guardar nueva convocatoria");
                 console.log("el token es "+localStorage.getItem('token'));        
                 
