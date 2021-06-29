@@ -4,6 +4,7 @@ import Ingresar from '../views/usuarios/Ingresar.vue'
 import Confirmado from '@/views/usuarios/Confirmado.vue'
 import CRUDConvocatorias from '@/components/CRUDConvocatorias.vue'
 import CRUDProgEducativos from '@/components/CRUDProgEducativos.vue'
+import CRUDRequisitos from '@/components/CRUDRequisitos.vue'
 
 Vue.use(VueRouter)
 
@@ -29,6 +30,12 @@ const routes = [
           // when /user/:id/posts is matched
           path: 'peducativos',
           component: CRUDProgEducativos
+        },
+         {
+          // UserPosts will be rendered inside User's <router-view>
+          // when /user/:id/posts is matched
+          path: 'requisitos',
+          component: CRUDRequisitos
         }
       ]
   },
