@@ -62,6 +62,7 @@
           { title: 'Dashboard', icon: 'mdi-view-dashboard', link:'' },
           { title: 'Convocatorias', icon: 'mdi-image', link:'/home/convocatorias' },
           { title: 'Programas Educativos', icon: 'mdi-help-box', link :'/home/peducativos' },
+          { title: 'Requisitos', icon: 'mdi-help-box', link :'/home/requisitos' },
         ],
         right: null,
         drawer:null

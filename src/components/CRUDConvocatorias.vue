@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="convocatorias" sort-by="descripcion"  class="elevation-10" >
+  <v-data-table :headers="headers" :items="convocatorias" sort-by="descripcion"  class="elevation-10" :header-props="headerProps" >
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
         <v-toolbar-title >Convocatorias</v-toolbar-title>
@@ -150,7 +150,7 @@
         color="primary"
         @click="initialize"
       >
-        Reset
+        Reiniciar
       </v-btn>
     </template>
   </v-data-table>
@@ -163,6 +163,9 @@
     data: () => ({
       dialog: false,
       dialogDelete: false,
+       headerProps: {
+        sortByText: "Ordenar por"
+      },
       headers: [
         {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
         { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},

@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="requisitos" sort-by="descripcion"  class="elevation-10" >
+  <v-data-table :headers="headers" :items="requisitos" sort-by="descripcion"  class="elevation-10"  :header-props="headerProps">
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
         <v-toolbar-title >Requisitos</v-toolbar-title>
@@ -62,20 +62,26 @@
                     md="4"
                   >
                   <!--  <v-date-picker v-model="editedItem.vigencia"></v-date-picker> -->
-                    <v-text-field
+                  <v-switch
+                      v-model="editedItem.esDocumento"
+                      :label="`¿El requisito es un Documento ?`"
+                      color="indigo"
+                    ></v-switch>
+                   <!--  <v-text-field
                       v-model="editedItem.esDocumento"
                       label="Es documento?"
-                    ></v-text-field> 
+                    ></v-text-field>  -->
                   </v-col>
                   <v-col
                     cols="12"
                     sm="6"
                     md="4"
                   >
-                    <v-text-field
+                   <v-switch
                       v-model="editedItem.esCambiante"
-                      label="Es Cambiante?"
-                    ></v-text-field>
+                      :label="`¿El requisito es cambiante o se debe actualizar?`"
+                       color="indigo"
+                    ></v-switch>
                   </v-col>
                 </v-row>
               </v-container>
@@ -135,7 +141,7 @@
         color="primary"
         @click="initialize"
       >
-        Reset
+        Reiniciar
       </v-btn>
     </template>
   </v-data-table>
@@ -149,6 +155,9 @@
     data: () => ({
       dialog: false,
       dialogDelete: false,
+      headerProps: {
+        sortByText: "Ordenar por"
+      },
       headers: [
         {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
         { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
@@ -164,16 +173,16 @@
         id:'',
         nombre: '',
         descripcion: '',
-        esDocumento: '',
-        esCambiante: '',
+        esDocumento: false,
+        esCambiante: false,
         tipo: ''
       },
       defaultItem: {
          id:'',
         nombre: '',
         descripcion: '',
-        esDocumento: '',
-        esCambiante: '',
+        esDocumento: false,
+        esCambiante: false,
         tipo: ''
       },
               

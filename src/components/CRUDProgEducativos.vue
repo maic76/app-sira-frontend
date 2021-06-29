@@ -1,8 +1,8 @@
 <template>
-  <v-data-table :headers="headers" :items="programas" sort-by="descripcion"  class="elevation-10" >
+  <v-data-table :headers="headers" :items="programas" sort-by="descripcion"  class="elevation-10" :header-props="headerProps">
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
-        <v-toolbar-title >Programas Educativos</v-toolbar-title>
+        <v-toolbar-title >P. Educativos</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -56,17 +56,64 @@
                       label="Clave"
                     ></v-text-field>
                   </v-col>
-                  <v-col
+                   <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="editedItem.vigencia"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.vigencia"
+                            label="Vigencia"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="editedItem.vigencia"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="menu = false"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(editedItem.vigencia)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
+                  <!-- <v-col
                     cols="12"
                     sm="6"
                     md="4"
                   >
-                  <!--  <v-date-picker v-model="editedItem.vigencia"></v-date-picker> -->
+                  
                     <v-text-field
                       v-model="editedItem.vigencia"
                       label="Vigencia"
                     ></v-text-field> 
-                  </v-col>
+                  </v-col> -->
                   <v-col
                     cols="12"
                     sm="6"
@@ -135,7 +182,7 @@
         color="primary"
         @click="initialize"
       >
-        Reset
+        Reiniciar
       </v-btn>
     </template>
   </v-data-table>
@@ -148,6 +195,9 @@
     data: () => ({
       dialog: false,
       dialogDelete: false,
+       headerProps: {
+        sortByText: "Ordenar por"
+      },
       headers: [
         {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
         { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
@@ -157,6 +207,7 @@
         { text: 'Abreviatura', value: 'abreviatura', class: 'indigo accent-2 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
       ],
+      menu: false,
       programas: [],
       editedIndex: -1,
       editedItem: {
@@ -164,7 +215,7 @@
         nombre: '',
         descripcion: '',
         clave: '',
-        vigencia: '',
+        vigencia: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         abreviatura: '',
       },
       defaultItem: {
@@ -172,14 +223,14 @@
         nombre: '',
         descripcion: '',
         clave: '',
-        vigencia: '',
+        vigencia: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         abreviatura: '',
       },
     }),
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'Nuevo Programa Educativo' : 'Editar Programa Educativo'
+        return this.editedIndex === -1 ? 'Nuevo Prog. Educativo' : 'Editar Prog. Educativo'
       },
     },
 
