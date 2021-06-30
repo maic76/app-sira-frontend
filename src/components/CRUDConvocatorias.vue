@@ -209,21 +209,44 @@
           <v-card-text>
            <v-container>
                 <v-row>
+                  <template>
+                    <v-data-table
+                      :headers="headersRequisitos"
+                      :items="requisitosConvocatoria"
+                      :items-per-page="5"
+                      class="elevation-1"
+                    ></v-data-table>
+                  </template>
                   <v-col
-                    cols="12"
-                    sm="12"
-                    md="12"
+                    cols="10"
+                    sm="10"
+                    md="10"
                   >
-                 <!--   <v-select
-                        :items="programas"
-                         v-model="editedItem.programaEducativo"
-                         item-text="nombre"
-                         item-value="id"
-                        label="Programa Educativo"
-                        dense
-                        solo
-                      ></v-select>         -->          
+                  <v-autocomplete
+                    :items ="requisitos"
+                    v-model = "requisito"
+                    item-text = "nombre"
+                    item-value ="id"
+                    label = "Selecciona requisito"
+                    dense
+
+                  >                    
+                  </v-autocomplete>     
                   </v-col>
+                  <v-col
+                    cols="2"
+                    sm ="2"
+                    md="2"
+                    >
+                     <v-icon color="primary"  dark  class="mb-2"
+                        @click=""
+                    >
+                     mdi-playlist-plus
+                  </v-icon>
+                </v-col>
+                  
+               
+              
             </v-row>
           </v-container>
         </v-card-text>
@@ -255,7 +278,7 @@
       </v-icon>
        <v-icon
         color="info"
-        @click="requisitos(item)"
+        @click="editaRequisitos(item)"
       >
       mdi-clipboard-list-outline
       </v-icon>
@@ -320,6 +343,9 @@
      
       programas:[],
 
+      requisitos:[],
+      requisito : '',
+
       formTitleRequisitos: 'Requisitos de Convocatoria'
          
     }),
@@ -374,11 +400,20 @@
                       console.log(response.data);
                       this.programas = response.data;
                       
-                  })                 
+                  })
+
+         this.axios.get("/api/requisitos",
+                   config
+                   )
+                  .then(response => {
+                      console.log(response.data);
+                      this.requisitos = response.data;
+                      
+                  })                                  
 
       },
 
-      requisitos(item){
+      editaRequisitos(item){
           this.dialogRequisitos = true
       },
 
