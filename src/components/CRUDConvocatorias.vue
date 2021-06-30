@@ -61,27 +61,100 @@
                       label="Descripcion"
                     ></v-textarea>
                   </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.fechaInicio"
-                      label="Fecha Inicio"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                  <!--  <v-date-picker v-model="editedItem.vigencia"></v-date-picker> -->
-                    <v-text-field
-                      v-model="editedItem.fechaTermino"
-                      label="Fecha Termino"
-                    ></v-text-field> 
-                  </v-col>
+                 <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-menu
+                        ref="menu"
+                        v-model="menu"
+                        :close-on-content-click="false"
+                        :return-value.sync="editedItem.fechaInicio"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.fechaInicio"
+                            label="Fecha de Inicio"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="editedItem.fechaInicio"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="menu = false"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu.save(editedItem.fechaInicio)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
+                        <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-menu
+                        ref="menu2"
+                        v-model="menu2"
+                        :close-on-content-click="false"
+                        :return-value.sync="editedItem.fechaTermino"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.fechaTermino"
+                            label="Fecha de Término"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="editedItem.fechaTermino"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="menu2 = false"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu2.save(editedItem.fechaTermino)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
                   <v-col
                     cols="12"
                     sm="6"
@@ -89,7 +162,7 @@
                   >
                     <v-text-field
                       v-model="editedItem.cantAspirantes"
-                      label="Cant. de Aspirantes"
+                      label="Cupo"
                     ></v-text-field>
                   </v-col>
                 </v-row>
@@ -126,6 +199,43 @@
           </v-card>
         </v-dialog>
 
+        <v-dialog v-model="dialogRequisitos" max-width="500px">
+          <v-card>
+            <div class="indigo accent-3 text-center white--text">
+            <v-card-title>
+              <span class="text-h5">{{ formTitleRequisitos }}</span>
+            </v-card-title>
+          </div>
+          <v-card-text>
+           <v-container>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    sm="12"
+                    md="12"
+                  >
+                 <!--   <v-select
+                        :items="programas"
+                         v-model="editedItem.programaEducativo"
+                         item-text="nombre"
+                         item-value="id"
+                        label="Programa Educativo"
+                        dense
+                        solo
+                      ></v-select>         -->          
+                  </v-col>
+            </v-row>
+          </v-container>
+        </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeRequisitos">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
       </v-toolbar>
     </template>
 
@@ -143,7 +253,15 @@
       >
         mdi-delete
       </v-icon>
+       <v-icon
+        color="info"
+        @click="requisitos(item)"
+      >
+      mdi-clipboard-list-outline
+      </v-icon>
     </template>
+
+    
 
     <template v-slot:no-data>
       <v-btn
@@ -161,8 +279,11 @@
 
   export default {
     data: () => ({
+      menu: false,
+      menu2: false,
       dialog: false,
       dialogDelete: false,
+      dialogRequisitos: false,
        headerProps: {
         sortByText: "Ordenar por"
       },
@@ -171,9 +292,9 @@
         { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
         { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
         { text: 'Fecha Inicio', value: 'fechaInicio', class: 'indigo accent-2 white--text' },
-        { text: 'Fecha Termino', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
+        { text: 'Fecha Término', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
         { text: 'Programa Educativo', value: 'programaEducativo.nombre', class: 'indigo accent-2 white--text' },
-        { text: 'Capacidad Asp.', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
+        { text: 'Cupo', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
       ],
       convocatorias: [],
@@ -182,8 +303,8 @@
         id:'',
         nombre: '',
         descripcion: '',
-        fechaInicio: '',
-        fechaTermino: '',
+        fechaInicio: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaTermino: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         programaEducativo: '',
         cantAspirantes:''
       },
@@ -191,13 +312,15 @@
         id: '',
         nombre: '',
         descripcion: '',
-        fechaInicio: '',
-        fechaTermino: '',
+        fechaInicio: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaTermino: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         programaEducativo: '',
         cantAspirantes:''
       },
      
       programas:[],
+
+      formTitleRequisitos: 'Requisitos de Convocatoria'
          
     }),
 
@@ -205,6 +328,7 @@
       formTitle () {
         return this.editedIndex === -1 ? 'Nueva Convocatoria' : 'Editar Convocatoria'
       },
+
     },
 
     watch: {
@@ -252,6 +376,10 @@
                       
                   })                 
 
+      },
+
+      requisitos(item){
+          this.dialogRequisitos = true
       },
 
       editItem (item) {
@@ -320,6 +448,10 @@
           this.editedItem = Object.assign({}, this.defaultItem)
           this.editedIndex = -1
         })
+      },
+
+      closeRequisitos(){
+          this.dialogRequisitos = false
       },
 
       save () {
