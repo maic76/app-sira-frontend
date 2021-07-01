@@ -24,7 +24,7 @@
 
             <v-card-text>
               <v-container>
-                
+                <v-row>
                   <v-col
                     cols="12"
                     sm="12"
@@ -48,8 +48,8 @@
                   </v-col>
                   <v-col
                     cols="12"
-                    sm="6"
-                    md="4"
+                    sm="12"
+                    md="12"
                   >
                     <v-text-field
                       v-model="editedItem.tipo"
@@ -58,28 +58,24 @@
                   </v-col>
                   <v-col
                     cols="12"
-                    sm="6"
+                    sm="4"
                     md="4"
-                  >
-                  <!--  <v-date-picker v-model="editedItem.vigencia"></v-date-picker> -->
+                  >        
                   <v-switch
                       v-model="editedItem.esDocumento"
-                      :label="`¿El requisito es un Documento ?`"
+                      :label="`Documento`"
                       color="indigo"
                     ></v-switch>
-                   <!--  <v-text-field
-                      v-model="editedItem.esDocumento"
-                      label="Es documento?"
-                    ></v-text-field>  -->
+             
                   </v-col>
                   <v-col
                     cols="12"
-                    sm="6"
+                    sm="4"
                     md="4"
                   >
                    <v-switch
                       v-model="editedItem.esCambiante"
-                      :label="`¿El requisito es cambiante o se debe actualizar?`"
+                      :label="`Actualizable`"
                        color="indigo"
                     ></v-switch>
                   </v-col>

@@ -208,20 +208,43 @@
           </div>
           <v-card-text>
            <v-container>
-                <v-row>
-                  <template>
-                    <v-data-table
-                      :headers="headersRequisitos"
-                      :items="requisitosConvocatoria"
-                      :items-per-page="5"
-                      class="elevation-1"
-                    ></v-data-table>
-                  </template>
+              <template>
+                <v-subheader>Requisitos de la Convocatoria</v-subheader>
+              </template>                 
+                 
+               <v-divider></v-divider>
+                <v-row>            
+                     
                   <v-col
-                    cols="10"
-                    sm="10"
-                    md="10"
+                      cols="12"
+                      sm="12"
+                      md="12"
+                      >
+                      <template>
+                        <v-data-table
+                          :headers="headersRequisitos"
+                          :items="requisitosConvocatoria"
+                          :items-per-page="5"
+                          class="elevation-1"
+                        ></v-data-table>
+                      </template>
+                </v-col>
+                 <v-spacer></v-spacer>
+                <v-spacer></v-spacer>
+              </v-row>    
+
+              <v-row>
+                  <v-divider></v-divider>   
+                  
+
+             <v-col
+                    cols="12"
+                    sm="12"
+                    md="12"
                   >
+                   <template>
+                         <v-subheader>Agrega un nuevo requisito</v-subheader>
+                    </template>
                   <v-autocomplete
                     :items ="requisitos"
                     v-model = "requisito"
@@ -234,27 +257,61 @@
                   </v-autocomplete>     
                   </v-col>
                   <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                    <v-select   
+                        :items="['original','copia','ambos']"                                    
+                        label="original/copia"
+                        dense
+                        solo
+                      ></v-select>     
+                </v-col>
+
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+                     <v-switch
+                      v-model="esIndispensable"
+                      label="Es indispensable"
+                       color="indigo"
+                    ></v-switch>
+                </v-col>
+
+                <v-col
+                    cols="12"
+                    sm="6"
+                    md="4"
+                  >
+
+                 <v-text-field
+                     
+                      label="Cantidad"
+                      type = "number"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col
                     cols="2"
                     sm ="2"
                     md="2"
                     >
-                     <v-icon color="primary"  dark  class="mb-2"
+                    
+                     <v-btn
+                       color="primary"  dark  class="mb-2"
                         @click=""
-                    >
-                     mdi-playlist-plus
-                  </v-icon>
-                </v-col>
-                  
-               
-              
+                      >
+                        Agregar Requisito
+                   </v-btn>
+                </v-col>              
             </v-row>
+         
           </v-container>
         </v-card-text>
             <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="blue darken-1" text @click="closeRequisitos">Cancel</v-btn>
-              <v-btn color="blue darken-1" text @click="">OK</v-btn>
-              <v-spacer></v-spacer>
+            
             </v-card-actions>
           </v-card>
         </v-dialog>
