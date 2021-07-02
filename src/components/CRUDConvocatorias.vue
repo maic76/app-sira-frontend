@@ -262,6 +262,7 @@
                     md="4"
                   >
                     <v-select   
+                        v-model="original"
                         :items="['original','copia','ambos']"                                    
                         label="original/copia"
                         dense
@@ -288,8 +289,13 @@
                   >
 
                  <v-text-field
-                     
+                      v-model ="cantidad"
                       label="Cantidad"
+                      type = "number"
+                    ></v-text-field>
+                    <v-text-field
+                      v-model ="idConvocatoria"
+                      v-show="false"
                       type = "number"
                     ></v-text-field>
                   </v-col>
@@ -301,7 +307,7 @@
                     
                      <v-btn
                        color="primary"  dark  class="mb-2"
-                        @click=""
+                        @click="agregarRequisito"
                       >
                         Agregar Requisito
                    </v-btn>
@@ -402,6 +408,18 @@
 
       requisitos:[],
       requisito : '',
+      esIndispensable: false,
+      original: '',
+      cantidad: '',
+      requisitosConvocatoria:[],
+      idConvocatoria:'',
+
+       headersRequisitos: [
+        {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
+        { text: 'Nombre ', align: 'start', sortable: false, value: 'requisito.nombre', class: 'indigo accent-2 white--text text-center'},
+        { text: 'Indispensable', value: 'indispensable', class: 'indigo accent-2 white--text' },
+        { text: 'Cant.', value: 'cantidad', class: 'indigo accent-2 white--text' },
+      ],
 
       formTitleRequisitos: 'Requisitos de Convocatoria'
          
@@ -471,6 +489,24 @@
       },
 
       editaRequisitos(item){
+          console.log("item >>>> "+item.id)
+         
+         let token = localStorage.getItem('token');
+         
+          let config = {
+                      headers: { Authorization: `Bearer ${token}` }
+                    };
+             this.idConvocatoria = item.id
+
+          this.axios.get("/api/convocatorias/"+item.id+"/requisitos",
+                   config
+                   )
+                  .then(response => {
+                      console.log(response.data);
+                      this.requisitosConvocatoria = response.data;
+                     
+                  })   
+
           this.dialogRequisitos = true
       },
 
@@ -611,6 +647,40 @@
                 }                              
            this.close()              
       },
+
+      agregarRequisito(){
+         let token = localStorage.getItem('token');          
+
+           let bodyParams = { 
+                    cantidad: this.cantidad,                   
+                    indispensable: this.esIndispensable,
+                    original: this.original                           
+                  };
+
+           let config = {
+                       headers: { Authorization: `Bearer ${token}` }
+                     };
+
+           this.axios.post("/api/convocatorias/"+this.idConvocatoria+"/requisitos/"+this.requisito,                  
+                           bodyParams,
+                           config
+                          )
+                        .then(response => {
+                           console.log(response);
+                           //onsole.log(response.headers.authorization);
+                              //actualizamos la vista
+                              console.log("convocatoria editada ->"+response.data);
+                               this.requisitosConvocatoria.push(response.data)      
+                          })
+                        .catch(error => {
+                          this.errorMessage = error.message;
+                          console.error("There was an error!", error);
+                        });  
+
+
+      }
+
+
     },
   }
 </script>
