@@ -570,9 +570,9 @@
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
-                        this.axios.put("/api/convocatorias/"+this.editedItem.id+"?idProgEducativo="+progEducativo,                  
+                        this.axios.put("/api/convocatorias/"+this.editedItem.id+"/peducativos/"+progEducativo,                  
                            bodyParams,
-                           config
+                           config                          
                           )
                         .then(response => {
                            console.log(response);
@@ -593,7 +593,7 @@
                 console.log("el token es "+localStorage.getItem('token'));        
                 
 
-                      this.axios.post("/api/convocatorias?idProgEducativo="+progEducativo,                  
+                      this.axios.post("/api/convocatorias/peducativos/"+progEducativo,                  
                            bodyParams,
                            config
                           )
