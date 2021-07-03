@@ -1,5 +1,16 @@
 <template>
   <v-data-table :headers="headers" :items="requisitos" sort-by="descripcion"  class="elevation-10"  :header-props="headerProps">
+     <template v-slot:item.esDocumento="{ item }">
+         <v-icon
+        color="primary"
+        class="mr-2"
+      >
+        {{getIcono(item.esDocumento)}}
+      </v-icon>
+     </template>
+     <template v-slot:item.esCambiante="{ item }">
+        <span>{{ item.esCambiante==true?"SI":"NO" }}</span>
+     </template>
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
         <v-toolbar-title >Requisitos</v-toolbar-title>
@@ -228,6 +239,11 @@
 
             
 
+      },
+
+      getIcono(valor){
+          if(valor) return "mdi-check"
+            else return "mdi-close"
       },
 
       editItem (item) {

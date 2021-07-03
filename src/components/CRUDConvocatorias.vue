@@ -1,5 +1,11 @@
 <template>
   <v-data-table :headers="headers" :items="convocatorias" sort-by="descripcion"  class="elevation-10" :header-props="headerProps" >
+     <template v-slot:item.fechaInicio="{ item }">
+        <span>{{ new Date(item.fechaInicio).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
+     </template>
+     <template v-slot:item.fechaTermino="{ item }">
+        <span>{{ new Date(item.fechaInicio).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
+     </template>
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
         <v-toolbar-title >Convocatorias</v-toolbar-title>
@@ -203,13 +209,13 @@
           <v-card>
             <div class="indigo accent-3 text-center white--text">
             <v-card-title>
-              <span class="text-h5">{{ formTitleRequisitos }}</span>
+              <span class="text-h5">{{ formTitleRequisitos }}{{convocatoriaNombre}}</span>
             </v-card-title>
           </div>
           <v-card-text>
            <v-container>
               <template>
-                <v-subheader>Requisitos de la Convocatoria</v-subheader>
+                <v-subheader>Requisitos de la Convocatoria {{convocatoriaNombre}}</v-subheader>
               </template>                 
                  
                <v-divider></v-divider>
@@ -362,6 +368,7 @@
 <script>
 
   import {axios} from "axios";
+  import {qs} from "qs";
 
   export default {
     data: () => ({
@@ -413,15 +420,16 @@
       cantidad: '',
       requisitosConvocatoria:[],
       idConvocatoria:'',
+      convocatoriaNombre:'',
 
        headersRequisitos: [
         {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
-        { text: 'Nombre ', align: 'start', sortable: false, value: 'requisito.nombre', class: 'indigo accent-2 white--text text-center'},
+        { text: 'Requisito ', align: 'start', sortable: false, value: 'requisito.nombre', class: 'indigo accent-2 white--text text-center'},
         { text: 'Indispensable', value: 'indispensable', class: 'indigo accent-2 white--text' },
         { text: 'Cant.', value: 'cantidad', class: 'indigo accent-2 white--text' },
       ],
 
-      formTitleRequisitos: 'Requisitos de Convocatoria'
+      formTitleRequisitos: 'Requisitos de  '
          
     }),
 
@@ -490,7 +498,7 @@
 
       editaRequisitos(item){
           console.log("item >>>> "+item.id)
-         
+         this.convocatoriaNombre=item.nombre
          let token = localStorage.getItem('token');
          
           let config = {
@@ -649,20 +657,21 @@
       },
 
       agregarRequisito(){
-         let token = localStorage.getItem('token');          
+         let token = localStorage.getItem('token');     
 
-           let bodyParams = { 
-                    cantidad: this.cantidad,                   
-                    indispensable: this.esIndispensable,
-                    original: this.original                           
-                  };
+         let params = this.qs.stringify({
+            cantidad: this.cantidad,
+            indispensable : this.esIndispensable,
+            original: this.original
+         })     
+          
 
            let config = {
                        headers: { Authorization: `Bearer ${token}` }
                      };
 
            this.axios.post("/api/convocatorias/"+this.idConvocatoria+"/requisitos/"+this.requisito,                  
-                           bodyParams,
+                           params,
                            config
                           )
                         .then(response => {
@@ -670,7 +679,11 @@
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
                               console.log("convocatoria editada ->"+response.data);
-                               this.requisitosConvocatoria.push(response.data)      
+                               this.requisitosConvocatoria=response.data.requisitos
+                                    this.requisito=''
+                                    this.cantidad=''
+                                    this.original=''
+                                    this.esIndispensable=false
                           })
                         .catch(error => {
                           this.errorMessage = error.message;

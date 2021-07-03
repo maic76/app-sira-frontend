@@ -1,5 +1,8 @@
 <template>
   <v-data-table :headers="headers" :items="programas" sort-by="descripcion"  class="elevation-10" :header-props="headerProps">
+    <template v-slot:item.vigencia="{ item }">
+        <span>{{ new Date(item.vigencia).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
+     </template>
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
         <v-toolbar-title >P. Educativos</v-toolbar-title>
