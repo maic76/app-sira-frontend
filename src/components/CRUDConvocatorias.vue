@@ -205,6 +205,18 @@
           </v-card>
         </v-dialog>
 
+        <v-dialog v-model="dialogDeleteReq" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">¿Estas seguro que deseas eliminar ?</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
+              <v-btn color="blue darken-1" text @click="deleteReqConfirm">OK</v-btn>
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         <v-dialog v-model="dialogRequisitos" max-width="500px">
           <v-card>
             <div class="indigo accent-3 text-center white--text">
@@ -232,7 +244,18 @@
                           :items="requisitosConvocatoria"
                           :items-per-page="5"
                           class="elevation-1"
-                        ></v-data-table>
+
+                        >
+                          <template v-slot:item.requisito.id="{ item }">
+                            <v-icon
+                              color="teal"
+                              class="mr-2"
+                              @click="deleteRequisito(item.requisito.id,item.cantidad,item.indispensable,item.original)"
+                            >
+                               mdi-delete
+                            </v-icon>     
+                            </template>
+                        </v-data-table>
                       </template>
                 </v-col>
                  <v-spacer></v-spacer>
@@ -355,6 +378,8 @@
 
     
 
+    
+
     <template v-slot:no-data>
       <v-btn
         color="primary"
@@ -377,6 +402,7 @@
       dialog: false,
       dialogDelete: false,
       dialogRequisitos: false,
+      dialogDeleteReq: false,
        headerProps: {
         sortByText: "Ordenar por"
       },
@@ -421,12 +447,16 @@
       requisitosConvocatoria:[],
       idConvocatoria:'',
       convocatoriaNombre:'',
+      requisitoIndex: -1,
+      idRequisito: '',
 
        headersRequisitos: [
         {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
         { text: 'Requisito ', align: 'start', sortable: false, value: 'requisito.nombre', class: 'indigo accent-2 white--text text-center'},
         { text: 'Indispensable', value: 'indispensable', class: 'indigo accent-2 white--text' },
         { text: 'Cant.', value: 'cantidad', class: 'indigo accent-2 white--text' },
+        { text: 'Original.', value: 'original', class: 'indigo accent-2 white--text' },
+         { text: 'reqid', value: 'requisito.id', class: 'indigo accent-2 white--text' },
       ],
 
       formTitleRequisitos: 'Requisitos de  '
@@ -691,7 +721,56 @@
                         });  
 
 
-      }
+      },
+
+      deleteRequisito(id,cantidad,esIndispensable,original){
+        console.log(id,cantidad,esIndispensable,original)
+         this.idRequisito = id        
+         this.cantidad = cantidad
+         this.esIndispensable = esIndispensable
+         this.original = original
+        
+        //this.editedItem = Object.assign({}, item)
+        this.dialogDeleteReq = true
+      },
+
+      closeDeleteReq(){
+        
+        this.dialogDeleteReq = false
+      },
+
+       deleteReqConfirm () {
+       // this.convocatorias.splice(this.editedIndex, 1)
+           let token = localStorage.getItem('token');
+             console.log(this.cantidad,this.esIndispensable,this.original)
+          let params2 = this.qs.stringify({
+          
+         })     
+
+           let config = {
+                       headers: { Authorization: `Bearer ${token}` }
+                     };
+
+          //let indice = this.editedIndex;
+             this.axios.delete("/api/convocatorias/"+this.idConvocatoria+"/requisitos/"+this.idRequisito+"?cantidad="+this.cantidad+"&indispensable="+this.esIndispensable+"&original="+this.original,                  
+                           //params2,
+                           config
+                          )
+                        .then(response => {
+                           console.log(response);
+                           //onsole.log(response.headers.authorization);
+                              //actualizamos la vista
+                           console.log("requisito-convocatoria eliminado ->"+response);
+                              this.requisitosConvocatoria = response.requisitos                              
+                              //this.requisitos = this.convocatorias.filter(p => p.id != indice)
+                              this.closeDeleteReq()
+                          })
+                        .catch(error => {
+                          this.errorMessage = error.message;
+                          console.error("There was an error!", error);
+                        });     
+      
+      },
 
 
     },
