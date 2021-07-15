@@ -5,6 +5,7 @@ import Confirmado from '@/views/usuarios/Confirmado.vue'
 import CRUDConvocatorias from '@/components/CRUDConvocatorias.vue'
 import CRUDProgEducativos from '@/components/CRUDProgEducativos.vue'
 import CRUDRequisitos from '@/components/CRUDRequisitos.vue'
+import ListadoConvocatorias from '@/components/ListadoConvocatorias.vue'
 
 Vue.use(VueRouter)
 
@@ -20,19 +21,19 @@ const routes = [
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
        children: [
         {
-          // UserProfile will be rendered inside User's <router-view>
+          // Convocatorias will be rendered inside Home's <router-view>
           // when /user/:id/profile is matched
           path: 'convocatorias',
           component: CRUDConvocatorias
         },
         {
-          // UserPosts will be rendered inside User's <router-view>
+          // Peducativos will be rendered inside Home's <router-view>
           // when /user/:id/posts is matched
           path: 'peducativos',
           component: CRUDProgEducativos
         },
          {
-          // UserPosts will be rendered inside User's <router-view>
+          // Requisitos will be rendered inside Home's <router-view>
           // when /user/:id/posts is matched
           path: 'requisitos',
           component: CRUDRequisitos
@@ -44,6 +45,12 @@ const routes = [
     name: 'Confirmado',
     component: Confirmado
   },
+  {
+    path: '/aspirantes/convocatorias',
+    name: 'ListadoConvocatorias',
+    component: ListadoConvocatorias
+
+  }
  
 ]
 
