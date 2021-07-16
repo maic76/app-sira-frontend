@@ -9,7 +9,7 @@
           <div class="d-flex flex-no-wrap justify-space-between" >
             <div>
               <v-card-title
-                    class="text-h5"
+                    class="text-h5 fix "
                     >Maestría en Computación Aplicada</v-card-title>  
                     <v-card-subtitle class="font-weight-regular">Convocatoria 2021</v-card-subtitle>
             </div>
@@ -79,15 +79,16 @@
 
     <v-divider></v-divider>           
                
-         <v-card-actions>
+         <v-card-actions class="text-center" >
               <v-spacer></v-spacer>
-              <v-btn color="primary"  dark  class="mb-2"
+              <div >
+              <v-btn color="primary"  dark  class="mb-2 "
                
                 @click=""
               >
                 Registrar participación
               </v-btn>
-         
+            </div>
             </v-card-actions>
         </v-card>
      </v-dialog>
@@ -133,5 +134,13 @@
     },
   }
 </script>
+<style type="text/css">
+  .fix {
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+}
+</style>
 
 
