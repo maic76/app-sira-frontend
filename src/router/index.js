@@ -6,6 +6,7 @@ import CRUDConvocatorias from '@/components/CRUDConvocatorias.vue'
 import CRUDProgEducativos from '@/components/CRUDProgEducativos.vue'
 import CRUDRequisitos from '@/components/CRUDRequisitos.vue'
 import ListadoConvocatorias from '@/components/ListadoConvocatorias.vue'
+import ConvocatoriaDetalle from '@/components/ConvocatoriaDetalle.vue'
 
 Vue.use(VueRouter)
 
@@ -49,6 +50,12 @@ const routes = [
     path: '/aspirantes/convocatorias',
     name: 'ListadoConvocatorias',
     component: ListadoConvocatorias
+
+  },
+   {
+    path: '/aspirantes/convocatorias/detalle',
+    name: 'ConvocatoriaDetalle',
+    component: ConvocatoriaDetalle
 
   }
  
