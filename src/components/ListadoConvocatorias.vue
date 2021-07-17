@@ -26,7 +26,7 @@
                       outlined
                       rounded
                       small
-                      @click="verDetalle(convocatoria.id)"
+                      @click="verDetalle(convocatoria)"
                     >
                       VER DETALLE
                     </v-btn>
@@ -57,15 +57,16 @@
             <div>
               <v-card-title
                     class="text-h5 fix white--text "
-                    >Maestría en Computación Aplicada</v-card-title>  
-                    <v-card-subtitle class="font-weight-regular white--text">Convocatoria 2021</v-card-subtitle>
+                   
+                    >{{tituloProg}}</v-card-title>  
+                    <v-card-subtitle class="font-weight-regular white--text">{{tituloConv}}</v-card-subtitle>
             </div>
              <v-avatar
                   class="ma-3"
                   size="100"
                   tile
                 >
-                  <v-img contain src="http://www.lania.mx/wp-content/uploads/2020/05/logoMR.png"></v-img>
+                  <v-img contain :src=logo></v-img>
                 </v-avatar>
           </div>
           <v-container>
@@ -76,7 +77,7 @@
                     md="6"
                   >                
                    <p class="font-weight-bold mb-0">Fecha Inicio:</p>
-                    <p class="font-weight-regular">10 de Julio de 2021</p>
+                    <p class="font-weight-regular">{{fechaInicio}}</p>
                     <p class="font-weight-bold mb-0">Fecha Examen:</p>
                     <p class="font-weight-regular">10 de Agosto de 2021</p>
                 
@@ -88,7 +89,7 @@
                   >
                 
                    <p class="font-weight-bold mb-0">Fecha Término:</p>
-                    <p class="font-weight-regular">10 de Agosto de 2021</p>
+                    <p class="font-weight-regular">{{fechaTermino}}</p>
                     <p class="font-weight-bold mb-0">Hora Exámen:</p>
                     <p class="font-weight-regular">5:00 pm</p>
              
@@ -182,6 +183,12 @@
         peducativo: ''
       },
 
+      tituloConv: '',
+      tituloProg: '',
+      fechaInicio: '',
+      fechaTermino:'',
+      logo:'',
+
       requisitosConv: [
       /*  { header: 'Requisitos' },
         {
@@ -251,8 +258,8 @@
 
        },
 
-       verDetalle(idConv){
-          console.log(idConv)
+       verDetalle(convocatoria){
+          console.log(convocatoria)
 
          let token = localStorage.getItem('token');
          
@@ -261,14 +268,19 @@
                     };
         
 
-         this.axios.get("/api/convocatorias/"+idConv+"/requisitos",
+         this.axios.get("/api/convocatorias/"+convocatoria.id+"/requisitos",
                    config
                    )
                   .then(response => {
                       console.log(response.data);
                       this.requisitosConv = response.data;
-                     
-                  })   
+                      
+                  }) 
+         this.tituloConv = convocatoria.nombre
+         this.tituloProg = convocatoria.programaEducativo.nombre
+         this.fechaTermino = convocatoria.fechaTermino
+         this.fechaInicio = convocatoria.fechaInicio
+         this.logo = convocatoria.programaEducativo.src
          this.dialog = true
        },
 
