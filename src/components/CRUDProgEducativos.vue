@@ -4,8 +4,8 @@
         <span>{{ new Date(item.vigencia).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
      </template>
     <template v-slot:top>
-      <v-toolbar flat color="indigo accent-3 white--text"  >
-        <v-toolbar-title >P. Educativos</v-toolbar-title>
+      <v-toolbar flat color="indigo darken-2 white--text"  >
+        <v-toolbar-title class="text-h5">Programas Educativos</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -14,12 +14,12 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px" >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn  color="primary"  dark  class="mb-2" v-bind="attrs"  v-on="on" >
+            <v-btn  color="indigo accent-3"  dark  class="mb-2" v-bind="attrs"  v-on="on" >
              Crear Nuevo
             </v-btn>
           </template>
           <v-card>
-            <div class="indigo accent-3 text-center white--text">
+            <div class="indigo darken-2 text-center white--text">
             <v-card-title>
               <span class="text-h5">{{ formTitle }}</span>
             </v-card-title>
@@ -91,14 +91,14 @@
                           <v-spacer></v-spacer>
                           <v-btn
                             text
-                            color="primary"
+                            color="indigo darken-2"
                             @click="menu = false"
                           >
                             Cancel
                           </v-btn>
                           <v-btn
                             text
-                            color="primary"
+                            color="indigo darken-2"
                             @click="$refs.menu.save(editedItem.vigencia)"
                           >
                             OK
@@ -133,14 +133,14 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary"  dark  class="mb-2"
+              <v-btn color="indigo darken-2"  dark  class="mb-2"
                
                 @click="close"
               >
                 Cancelar
               </v-btn>
               <v-btn
-               color="primary"  dark  class="mb-2"
+               color="indigo darken-2"  dark  class="mb-2"
                 @click="save"
               >
                 Guardar
@@ -202,13 +202,13 @@
         sortByText: "Ordenar por"
       },
       headers: [
-        {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
-        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
-        { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
-        { text: 'Clave', value: 'clave', class: 'indigo accent-2 white--text' },
-        { text: 'Vigencia', value: 'vigencia', class: 'indigo accent-2 white--text' },
-        { text: 'Abreviatura', value: 'abreviatura', class: 'indigo accent-2 white--text' },
-        { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
+        {text: 'No.', value:'id', class:'indigo lighten-1 white--text text-center'},
+        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo lighten-1 white--text text-center'},
+        { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo lighten-1 white--text'},
+        { text: 'Clave', value: 'clave', class: 'indigo lighten-1 white--text' },
+        { text: 'Vigencia', value: 'vigencia', class: 'indigo lighten-1 white--text' },
+        { text: 'Abreviatura', value: 'abreviatura', class: 'indigo lighten-1 white--text' },
+        { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo lighten-1 white--text' },
       ],
       menu: false,
       programas: [],

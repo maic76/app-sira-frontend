@@ -6,12 +6,12 @@
           class="mx-auto"
          
         >
-          <div class="d-flex flex-no-wrap justify-space-between" >
+          <div class="d-flex flex-no-wrap justify-space-between indigo darken-4"  >
             <div>
               <v-card-title
-                    class="text-h5 fix "
+                    class="text-h5 fix white--text "
                     >Maestría en Computación Aplicada</v-card-title>  
-                    <v-card-subtitle class="font-weight-regular">Convocatoria 2021</v-card-subtitle>
+                    <v-card-subtitle class="font-weight-regular white--text">Convocatoria 2021</v-card-subtitle>
             </div>
              <v-avatar
                   class="ma-3"
@@ -98,7 +98,7 @@
     data () {
       return {
         dialog: true,
-         items: [
+      items: [
         { header: 'Requisitos' },
         {
          

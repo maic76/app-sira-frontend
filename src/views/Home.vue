@@ -1,6 +1,6 @@
 <template >
 <div id="inspire">
-	<v-navigation-drawer v-model="drawer" app >
+	<v-navigation-drawer v-model="drawer" app class="indigo lighten-4">
        <v-list-item color="indigo">
         <v-list-item-content>
           <v-list-item-title class="text-h6">
@@ -35,15 +35,18 @@
       </v-list>
     </v-navigation-drawer>
 
-    <v-app-bar app color="indigo accent-4">
+    <v-app-bar app color="indigo darken-4">
       <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
-      <v-toolbar-title> <span class="white--text">SIRA</span></v-toolbar-title>
+      <v-toolbar-title> <span class="white--text">Sistema de Registro de Aspirantes </span></v-toolbar-title>
     </v-app-bar>
 
-    <v-main>
+    <v-main class="indigo lighten-4">
       <!--  -->
-      <router-view/>
+     
+          <router-view/>
+    <!--    <v-row justify="center" align="center"></v-row> -->
+      
     </v-main>
 </div>
     
