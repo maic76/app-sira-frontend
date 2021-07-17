@@ -6,6 +6,9 @@
      <template v-slot:item.fechaTermino="{ item }">
         <span>{{ new Date(item.fechaInicio).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
      </template>
+     <template v-slot:item.fechaExamen="{ item }">
+        <span>{{ new Date(item.fechaExamen).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
+     </template>
     <template v-slot:top>
       <v-toolbar flat color="indigo accent-3 white--text"  >
         <v-toolbar-title >Convocatorias</v-toolbar-title>
@@ -155,6 +158,53 @@
                             text
                             color="primary"
                             @click="$refs.menu2.save(editedItem.fechaTermino)"
+                          >
+                            OK
+                          </v-btn>
+                        </v-date-picker>
+                      </v-menu>
+                    </v-col>
+                                            <v-col
+                      cols="12"
+                      sm="6"
+                      md="4"
+                    >
+                      <v-menu
+                        ref="menu3"
+                        v-model="menu3"
+                        :close-on-content-click="false"
+                        :return-value.sync="editedItem.fechaExamen"
+                        transition="scale-transition"
+                        offset-y
+                        min-width="auto"
+                      >
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-text-field
+                            v-model="editedItem.fechaExamen"
+                            label="Fecha de Examen"
+                            prepend-icon="mdi-calendar"
+                            readonly
+                            v-bind="attrs"
+                            v-on="on"
+                          ></v-text-field>
+                        </template>
+                        <v-date-picker
+                          v-model="editedItem.fechaExamen"
+                          no-title
+                          scrollable
+                        >
+                          <v-spacer></v-spacer>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="menu3 = false"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn
+                            text
+                            color="primary"
+                            @click="$refs.menu3.save(editedItem.fechaExamen)"
                           >
                             OK
                           </v-btn>
@@ -399,6 +449,7 @@
     data: () => ({
       menu: false,
       menu2: false,
+      menu3: false,
       dialog: false,
       dialogDelete: false,
       dialogRequisitos: false,
@@ -412,6 +463,7 @@
         { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
         { text: 'Fecha Inicio', value: 'fechaInicio', class: 'indigo accent-2 white--text' },
         { text: 'Fecha Término', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
+         { text: 'Fecha Examen', value: 'fechaExamen', class: 'indigo accent-2 white--text' },
         { text: 'Programa Educativo', value: 'programaEducativo.nombre', class: 'indigo accent-2 white--text' },
         { text: 'Cupo', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
@@ -424,6 +476,7 @@
         descripcion: '',
         fechaInicio: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         fechaTermino: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+         fechaExamen: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         programaEducativo: '',
         cantAspirantes:''
       },
@@ -433,6 +486,7 @@
         descripcion: '',
         fechaInicio: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         fechaTermino: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+        fechaExamen: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
         programaEducativo: '',
         cantAspirantes:''
       },
@@ -631,7 +685,8 @@
                     descripcion: this.editedItem.descripcion,
                     fechaInicio: this.editedItem.fechaInicio,
                     fechaTermino: this.editedItem.fechaTermino,                   
-                    cantAspirantes: this.editedItem.cantAspirantes                  
+                    cantAspirantes: this.editedItem.cantAspirantes,
+                    fechaExamen: this.editedItem.fechaExamen                  
                   };
 
            let config = {
