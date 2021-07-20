@@ -13,9 +13,9 @@
       tile
       >
       <v-card-title class="indigo darken-4 white--text ">
-        <div class="subtitle-1">Programa Educativo</div>
+        <div class="subtitle-1">{{convocatoria.convocatoria.programaEducativo.nombre}}</div>
           <p class="text-h5 white--text fix">
-            Nombre de la convocatoria 2021
+            {{convocatoria.convocatoria.nombre}}
           </p>
          
       </v-card-title>
@@ -46,7 +46,7 @@
                          
                          color="primary"
                           class="ma-1"
-                      >29 de Julio 2021</v-chip>                
+                      >{{convocatoria.convocatoria.fechaTermino}}</v-chip>                
                 </v-col>
               </v-row>
         </v-card-text>
@@ -62,11 +62,46 @@
   </v-col>
 </v-container>
 </template>
+
 <script type="text/javascript">
+
+  import {axios} from "axios";
+
    export default {
     data: () => ({
-          convocatorias:[{},{}]
-    })
+          convocatorias:[]
+    }),
+
+    created () {
+      this.initialize()
+    },
+
+    methods: {
+
+     initialize () {
+
+      let token = localStorage.getItem('token');
+         
+      let config = {
+                   headers: { Authorization: `Bearer ${token}` }
+                  };
+
+      this.axios.get("/api/participaciones/aspirantes/1",           
+                   config
+                  )
+                .then(response => {
+                   console.log(response);
+                   //console.log(response.headers.authorization);
+                   //actualizamos la vista
+                     this.convocatorias=response.data;   
+                  })
+                .catch(error => {
+                  this.errorMessage = error.message;
+                  console.error("There was an error!", error);
+                });  
+
+       },
+    }
 
   }
 </script>
