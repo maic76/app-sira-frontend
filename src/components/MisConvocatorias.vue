@@ -60,6 +60,43 @@
         </v-card-actions>
       </v-card>
   </v-col>
+
+  <v-card v-if="convocatorias.length==0"
+        class="mx-auto"
+        max-width="500"
+         elevation="8"
+      shaped
+      tile
+      >
+      <v-card-title class="indigo darken-4 white--text ">
+     
+          <p class="text-h5 white--text fix">
+            Mis Convocatorias
+          </p>
+         
+      </v-card-title>
+        <v-card-text class="mt-2">
+              <v-row>
+                 <v-alert
+                    class="ma-4"
+                    border="top"
+                    color="blue"
+                    dense
+                    type="info"
+                  >Aún no te has registrado en ninguna convocatoria</v-alert>
+              </v-row>
+        </v-card-text>
+        <v-card-actions>
+          <v-btn
+           class="ma-4"
+            text
+            color="indigo accent-4"
+          >
+            Consultar convocatorias
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+
 </v-container>
 </template>
 
