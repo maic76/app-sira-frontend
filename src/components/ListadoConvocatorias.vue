@@ -79,7 +79,7 @@
                    <p class="font-weight-bold mb-0">Fecha Inicio:</p>
                     <p class="font-weight-regular">{{fechaInicio}}</p>
                     <p class="font-weight-bold mb-0">Fecha Examen:</p>
-                    <p class="font-weight-regular">10 de Agosto de 2021</p>
+                    <p class="font-weight-regular">{{fechaExamen}}</p>
                 
             </v-col>
              <v-col
@@ -187,6 +187,7 @@
       tituloProg: '',
       fechaInicio: '',
       fechaTermino:'',
+      fechaExamen:'',
       logo:'',
 
       requisitosConv: [
@@ -281,6 +282,7 @@
          this.fechaTermino = convocatoria.fechaTermino
          this.fechaInicio = convocatoria.fechaInicio
          this.logo = convocatoria.programaEducativo.src
+         this.fechaExamen = convocatoria.fechaExamen
          this.dialog = true
        },
 

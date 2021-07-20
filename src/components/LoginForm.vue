@@ -1,6 +1,6 @@
 <template>
 	<v-main>
-		<v-card class="px-4">			
+		<v-card class="px-4 ">			
 			<v-card-title >Ingresar</v-card-title>
 			<v-card-text>
 				<v-form ref="loginForm" v-model="valid" lazy-validation  >		  
