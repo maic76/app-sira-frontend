@@ -8,6 +8,7 @@ import CRUDRequisitos from '@/components/CRUDRequisitos.vue'
 import ListadoConvocatorias from '@/components/ListadoConvocatorias.vue'
 import ConvocatoriaDetalle from '@/components/ConvocatoriaDetalle.vue'
 import MisConvocatorias from '@/components/MisConvocatorias.vue'
+import Participacion from '@/components/Participacion.vue'
 
 Vue.use(VueRouter)
 
@@ -63,6 +64,12 @@ const routes = [
     path: '/aspirantes/misconvocatorias',
     name: 'MisConvocatorias',
     component: MisConvocatorias
+
+  },
+   {
+    path: '/aspirantes/participacion',
+    name: 'Participacion',
+    component: Participacion
 
   },
  
