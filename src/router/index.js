@@ -48,29 +48,36 @@ const routes = [
     name: 'Confirmado',
     component: Confirmado
   },
-  {
-    path: '/aspirantes/convocatorias',
-    name: 'ListadoConvocatorias',
-    component: ListadoConvocatorias
-
-  },
+  
    {
     path: '/aspirantes/convocatorias/detalle',
     name: 'ConvocatoriaDetalle',
     component: ConvocatoriaDetalle
 
   },
-   {
-    path: '/aspirantes/misconvocatorias',
-    name: 'MisConvocatorias',
-    component: MisConvocatorias
-
-  },
+   
    {
     path: '/aspirantes/participacion',
     name: 'Participacion',
     component: Participacion
 
+  },
+    {
+    path: '/aspirantes',
+    name: 'Aspirantes',
+    component: () => import(/* webpackChunkName: "home" */ '../views/Aspirantes.vue'),
+       children: [
+        
+        {
+           path: 'convocatorias',           
+            component: ListadoConvocatorias
+        },
+        {
+          path: 'misparticipaciones',          
+          component: MisConvocatorias
+        }
+        
+      ]
   },
  
 ]

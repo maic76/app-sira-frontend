@@ -10,12 +10,13 @@
         <span>{{ new Date(item.fechaExamen).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
      </template>
     <template v-slot:top>
-      <v-toolbar flat color="indigo accent-3 white--text"  >
-        <v-toolbar-title >Convocatorias</v-toolbar-title>
+      <v-toolbar flat color="indigo accent-3 white--text fix"  >
+        <v-toolbar-title class="fix">Convocatorias</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
           vertical
+
         ></v-divider>
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px" >
@@ -831,3 +832,11 @@
     },
   }
 </script>
+<style type="text/css">
+  .fix {
+    overflow-wrap: anywhere;
+    word-wrap: break-word;
+    word-break: normal;
+    hyphens: auto;
+}
+</style>

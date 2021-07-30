@@ -7,7 +7,7 @@
             SIRA
           </v-list-item-title>
           <v-list-item-subtitle>
-            Administrador
+            Aspirante
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -62,10 +62,8 @@
     data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard', link:'' },
-          { title: 'Convocatorias', icon: 'mdi-image', link:'/home/convocatorias' },
-          { title: 'Programas Educativos', icon: 'mdi-help-box', link :'/home/peducativos' },
-          { title: 'Requisitos', icon: 'mdi-help-box', link :'/home/requisitos' },
+          { title: 'Listado de convocatorias', icon: 'mdi-help-box', link :'/aspirantes/convocatorias' },
+          { title: 'Mis participaciones', icon: 'mdi-help-box', link :'/aspirantes/misparticipaciones' }
          ],
         right: null,
         drawer:null

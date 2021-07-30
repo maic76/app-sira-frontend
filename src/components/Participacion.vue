@@ -50,9 +50,10 @@
           </v-container>
          
          <v-data-table
+
 			    :headers="headers"
 			    :items="requisitosPart"
-			    class="elevation-1"
+			    class="elevation-1 "
 			  >
 			    <template v-slot:item.entregado="{ item }">
 			      <v-chip
@@ -64,13 +65,12 @@
 			    </template>
 
 			        <template v-slot:item.actions="{ item }">
-				      <v-icon
-				        color="teal"
-				        class="mr-2"
-				        @click=""
-				      >
-				        mdi-pencil
-				      </v-icon>
+				
+              <v-file-input
+                show-size
+                label="Archivo PDF"
+              ></v-file-input>
+            
 				     
 				    </template>
 
@@ -117,13 +117,13 @@
             align: 'start',
             sortable: false,
             value: 'name',
-           class: 'indigo lighten-1 white--text'
+           class: ' white--text  indigo darken-2'
           },
-          { text: 'Original/copia', value: 'original', class: 'indigo lighten-1 white--text' },
-          { text: 'Cantidad', value: 'cantidad', class: 'indigo lighten-1 white--text' },
-          { text: 'Indispensable', value: 'esIndispensable', class: 'indigo lighten-1 white--text' },
-          { text: 'Entregado', value: 'entregado', class: 'indigo lighten-1 white--text' },
-          { text: 'Subir archivo', value: 'actions', sortable: false, class: 'indigo lighten-1 white--text' },
+          { text: 'Original/copia', value: 'original', class: 'indigo darken-2 white--text' },
+          { text: 'Cantidad', value: 'cantidad', class: 'indigo darken-2 white--text' },
+          { text: 'Indispensable', value: 'esIndispensable', class: 'indigo darken-2 white--text' },
+          { text: 'Entregado', value: 'entregado', class: 'indigo darken-2 white--text' },
+          { text: 'Subir archivo', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
         ],
 
         requisitosPart : [
