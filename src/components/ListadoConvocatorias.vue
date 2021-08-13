@@ -127,7 +127,7 @@
               <div >
               <v-btn color="primary"  dark  class="mb-2 "
                
-                @click=""
+                @click="registrarParticipacion(convocatoriaR)"
               >
                 Registrar participación
               </v-btn>
@@ -143,6 +143,34 @@
      </v-dialog>
 <!-- fin del dialogo de detalle -->
 
+ <v-dialog
+      v-model="dialogOK"
+      max-width="290"
+    >
+      <v-card>
+        <v-card-title class="text-h5">
+          {{registroMessage}}
+        </v-card-title>
+
+        <v-card-text>
+          Le será enviado un correo con los detalles de su participación...
+        </v-card-text>
+
+        <v-card-actions>
+          <v-spacer></v-spacer>
+
+         
+          <v-btn
+            color="green darken-1"
+            text
+            @click="dialogOK = false" 
+          > <!--- Aquí se puede redireccionar a las participaciones-->
+            Entendido.
+          </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+
 </v-container>
 </template>
 
@@ -154,6 +182,9 @@
   export default {
     data: () => ({
       dialog: false,
+      dialogOK: false,
+      convocatoriaR: '',
+      registroMessage:'',
       convocatorias: [
        /* {
           id : 1,
@@ -284,9 +315,43 @@
          this.logo = convocatoria.programaEducativo.src
          this.fechaExamen = convocatoria.fechaExamen
          this.dialog = true
+         this.convocatoriaR = convocatoria
        },
 
-       color (tipo) {
+       registrarParticipacion(convocatoria){
+            console.log(convocatoria)
+
+            let token = localStorage.getItem('token');
+             let bodyParams = {};
+         
+            let config = {
+                      headers: { Authorization: `Bearer ${token}` }
+                    };
+
+            this.axios.post("/api/participaciones/convocatorias/"+convocatoria.id,
+                   bodyParams,
+                   config
+                   )
+                  .then(response => {
+                      console.log(response.data);
+                     // this.requisitosConv = response.data;
+                     this.openDialogOK(response.data.mensaje)
+                      
+                  })
+                  .catch(error => {
+                          this.errorMessage = error.message;
+                          console.error("There was an error!", error);
+                      });    
+        
+       },
+
+       openDialogOK(message){
+          this.registroMessage = message
+           this.dialogOK=true
+
+       },
+
+      color (tipo) {
         return tipo === 'Maestria' ? 'indigo darken-4' : 'indigo darken-1'
       },
 
