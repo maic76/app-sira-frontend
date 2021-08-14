@@ -9,6 +9,8 @@ import ListadoConvocatorias from '@/components/ListadoConvocatorias.vue'
 import ConvocatoriaDetalle from '@/components/ConvocatoriaDetalle.vue'
 import MisConvocatorias from '@/components/MisConvocatorias.vue'
 import Participacion from '@/components/Participacion.vue'
+import AspirantesConvocatoria from '@/components/AspirantesPorConvocatoria.vue'
+import ParticipacionValidaDocs from '@/components/ParticipacionValidaDocs.vue'
 
 Vue.use(VueRouter)
 
@@ -60,6 +62,18 @@ const routes = [
     path: '/aspirantes/participacion',
     name: 'Participacion',
     component: Participacion
+
+  },
+  {
+    path: '/seguimiento/convocatoria',
+    name: 'AspirantesConvocatoria',
+    component: AspirantesConvocatoria
+
+  },
+  {
+    path: '/seguimiento/convocatoria/participacion',
+    name: 'ParticipacionValidaDocs',
+    component: ParticipacionValidaDocs
 
   },
     {

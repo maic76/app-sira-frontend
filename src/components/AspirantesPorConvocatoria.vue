@@ -51,28 +51,29 @@
          <v-data-table
 
 			    :headers="headers"
-			    :items="requisitosPart"
+			    :items="aspirantes"
 			    class="elevation-1 "
 			  >
-			    <template v-slot:item.entregado="{ item }">
+			    <template v-slot:item.entregados="{ item }">
 			      <v-chip
-			        :color="getColor(item.entregado)"
+			        :color="getColor(total,item.entregados)"
 			        dark
 			       >
-			           <span v-if="item.entregado">Entregado</span>
-                 <span v-else>Falta</span>
+			          {{item.entregados}} de {{total}}
 			      </v-chip>
 			    </template>
 
-			        <template v-slot:item.actions="{ item }">
-				
-              <v-file-input
-                show-size
-                label="Archivo PDF"
-              ></v-file-input>
-            
-				     
-				    </template>
+              <template v-slot:item.actions="{ item }">
+                  <v-icon
+                    color="teal"
+                    class="mr-2"
+                    @click="verParticipacion(item)"
+                  >
+                    mdi-eye
+                  </v-icon>
+            </template>
+
+			       
 
  		 </v-data-table>
 
@@ -81,12 +82,7 @@
          <v-card-actions class="text-center" >
               <v-spacer></v-spacer>
               <div >
-              <v-btn color="primary"  dark  class="mb-2 "
-               
-                @click=""
-              >
-                Declinar participación
-              </v-btn>
+            
                <v-btn color="primary"  dark  class="mb-2 "
                
                 @click="dialog=false"
@@ -101,61 +97,60 @@
 	
 	export default {
 		data : () => ({
-			   tituloConv: 'Convocatoria Test 2021',
-		      tituloProg: 'Programa de Ejemplo',
+			   tituloConv: 'Participantes de la Convocatoria Test 2021',
+		      tituloProg: 'Programa de MCA',
 		      fechaInicio: '20/02/2021',
 		      fechaTermino:'24/03/2021',
 		      fechaExamen:'28/03/2021',
 		      logo:'http://www.lania.mx/wp-content/uploads/2020/05/thumbnail-1.png',
 		      total: 5,
-		      entregados: 2,
+		      //entregados: 2,
 
 	   headers: [
-          {
-            text: 'Requisito ',
+         {
+            text: 'Aspirante ',
             align: 'start',
             sortable: false,
             value: 'name',
            class: ' white--text  indigo darken-2'
           },
-          { text: 'Original/copia', value: 'original', class: 'indigo darken-2 white--text' },
-          { text: 'Cantidad', value: 'cantidad', class: 'indigo darken-2 white--text' },
-          { text: 'Indispensable', value: 'esIndispensable', class: 'indigo darken-2 white--text' },
-          { text: 'Entregado', value: 'entregado', class: 'indigo darken-2 white--text' },
-          { text: 'Subir archivo', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
+          { text: 'Escuela Procedencia', value: 'escuela', class: 'indigo darken-2 white--text' },
+          { text: 'Doc. Entregados', value: 'entregados', class: 'indigo darken-2 white--text' },
+          { text: 'Ver documentos', value: 'actions', class: 'indigo darken-2 white--text' }
         ],
 
-        requisitosPart : [
+        aspirantes : [
         		{
-        			name: 'Certificado de Licenciatura',
-        			cantidad: 2,
-        			original: 'ambos',
-        			esIndispensable: true,
-        			entregado: true
+              id: 1,
+        			name: 'Juan Pérez Reyes',
+        			escuela: 'Universidad de Xalapa',
+        			entregados: 3
+        			
         		},
         		{
-        			name: 'Título de Licenciatura',
-        			cantidad: 1,
-        			original: 'original',
-        			esIndispensable: true,
-        			entregado: true	
+              id: 2,
+        			name: 'Raúl Díaz Sánchez',
+              escuela: 'Universidad Veracruzana',
+              entregados: 2
         		},{
-
-        			name: 'CURP',
-        			cantidad: 1,
-        			original: 'copia',
-        			esIndispensable: true,
-        			entregado: false
+              id: 3,
+        			name: 'Mariana Rivas Portilla',
+              escuela: 'Universidad Veracruzana',
+              entregados: 5
         		}
         ],
 
 		}),
 
 	 methods: {
-	      getColor (entregado) {
-	        if (!entregado) return 'red'
-	        else if (entregado) return 'green'
+	      getColor (total,entregados) {
+	        if (total>entregados) return 'red'
+	        else return 'green'
 	       },
+
+       verParticipacion(item){
+          console.log(item);
+       }
     	},
 	}
 </script>

@@ -26,10 +26,10 @@
                     sm="6"
                     md="6"
                   >                
-                   <p class="font-weight-bold mb-0">Fecha Inicio:</p>
-                    <p class="font-weight-regular">{{fechaInicio}}</p>
-                    <p class="font-weight-bold mb-0">Fecha Examen:</p>
-                    <p class="font-weight-regular">{{fechaExamen}}</p>
+                   <p class="font-weight-bold mb-0">Nombre del Aspirante:</p>
+                    <p class="font-weight-regular">{{nombreAspirante}}</p>
+                    <p class="font-weight-bold mb-0">Número de whatsapp:</p>
+                    <p class="font-weight-regular">{{noWhatsapp}}</p>
                 
             </v-col>
              <v-col
@@ -38,8 +38,8 @@
                     md="6"
                   >
                 
-                   <p class="font-weight-bold mb-0">Fecha Término:</p>
-                    <p class="font-weight-regular">{{fechaTermino}}</p>
+                   <p class="font-weight-bold mb-0">Escuela de procedencia:</p>
+                    <p class="font-weight-regular">{{escuela}}</p>
                     <p class="font-weight-bold mb-0">Hora Exámen:</p>
                     <p class="font-weight-regular">5:00 pm</p>
              
@@ -64,15 +64,25 @@
 			      </v-chip>
 			    </template>
 
-			        <template v-slot:item.actions="{ item }">
-				
-              <v-file-input
-                show-size
-                label="Archivo PDF"
-              ></v-file-input>
-            
-				     
-				    </template>
+			       <template v-slot:item.documento="{ item }">
+                  <v-icon v-if="item.entregado"
+                    color="teal"
+                    class="mr-2"
+                    @click="verDocumento(item)"
+                  >
+                    mdi-eye
+                  </v-icon>
+                  <span v-else>No entregado</span>
+            </template>
+             <template v-slot:item.actions="{ item }">
+                   <v-chip
+              :color="getColor(item)"
+              dark
+             >
+                 <span v-if="item.validado">Validado</span>
+                 <span v-else>Falta validar</span>
+            </v-chip>
+            </template>
 
  		 </v-data-table>
 
@@ -81,12 +91,7 @@
          <v-card-actions class="text-center" >
               <v-spacer></v-spacer>
               <div >
-              <v-btn color="primary"  dark  class="mb-2 "
-               
-                @click=""
-              >
-                Declinar participación
-              </v-btn>
+             
                <v-btn color="primary"  dark  class="mb-2 "
                
                 @click="dialog=false"
@@ -101,11 +106,11 @@
 	
 	export default {
 		data : () => ({
-			   tituloConv: 'Convocatoria Test 2021',
-		      tituloProg: 'Programa de Ejemplo',
-		      fechaInicio: '20/02/2021',
-		      fechaTermino:'24/03/2021',
-		      fechaExamen:'28/03/2021',
+			   tituloConv: 'Convocatoria de MRySI 2014',
+		      tituloProg: 'Estatus de la participación del Aspirante',
+		      nombreAspirante: 'Miguel Ángel Landa López',
+		      escuela:'Universidad Veracruzana',
+		      noWhatsapp:'2288470202',
 		      logo:'http://www.lania.mx/wp-content/uploads/2020/05/thumbnail-1.png',
 		      total: 5,
 		      entregados: 2,
@@ -121,8 +126,8 @@
           { text: 'Original/copia', value: 'original', class: 'indigo darken-2 white--text' },
           { text: 'Cantidad', value: 'cantidad', class: 'indigo darken-2 white--text' },
           { text: 'Indispensable', value: 'esIndispensable', class: 'indigo darken-2 white--text' },
-          { text: 'Entregado', value: 'entregado', class: 'indigo darken-2 white--text' },
-          { text: 'Subir archivo', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
+          { text: 'Ver Documento', value: 'documento', class: 'indigo darken-2 white--text' },
+          { text: 'Validar', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
         ],
 
         requisitosPart : [
@@ -131,30 +136,34 @@
         			cantidad: 2,
         			original: 'ambos',
         			esIndispensable: true,
-        			entregado: true
+        			entregado: true,
+              validado: true
         		},
         		{
         			name: 'Título de Licenciatura',
         			cantidad: 1,
         			original: 'original',
         			esIndispensable: true,
-        			entregado: true	
+        			entregado: true,
+              validado: false	
         		},{
 
         			name: 'CURP',
         			cantidad: 1,
         			original: 'copia',
         			esIndispensable: true,
-        			entregado: false
+        			entregado: false,
+              validado: false
         		}
         ],
 
 		}),
 
 	 methods: {
-	      getColor (entregado) {
-	        if (!entregado) return 'red'
-	        else if (entregado) return 'green'
+	      getColor (item) {
+          console.log(item)
+	        if (!item.validado) return 'red'
+	        else return 'green'
 	       },
     	},
 	}
