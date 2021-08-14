@@ -59,8 +59,8 @@
 			        :color="getColor(item.entregado)"
 			        dark
 			       >
-			           <span v-if="item.entregado">Entregado</span>
-                 <span v-else>Falta</span>
+			           <span v-if="item.entregado">SI</span>
+                 <span v-else>NO</span>
 			      </v-chip>
 			    </template>
 
