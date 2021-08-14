@@ -64,8 +64,8 @@
 			      </v-chip>
 			    </template>
 
-			       <template v-slot:item.documento="{ item }">
-                  <v-icon v-if="item.entregado"
+			     <template v-slot:item.documento="{ item }">
+                <v-icon v-if="item.entregado"
                     color="teal"
                     class="mr-2"
                     @click="verDocumento(item)"
@@ -75,13 +75,17 @@
                   <span v-else>No entregado</span>
             </template>
              <template v-slot:item.actions="{ item }">
-                   <v-chip
-              :color="getColor(item)"
-              dark
-             >
-                 <span v-if="item.validado">Validado</span>
-                 <span v-else>Falta validar</span>
-            </v-chip>
+                 
+                  <v-btn
+                        icon
+                        :color="getColor(item)"
+                        :disabled="!item.entregado"
+                        @click="validarDocumento(item)"
+                      >
+              <v-icon>mdi-thumb-up</v-icon>
+              <span v-if="item.validado">Ok</span>
+                 <span v-else>Validar</span>
+            </v-btn>
             </template>
 
  		 </v-data-table>
@@ -126,8 +130,8 @@
           { text: 'Original/copia', value: 'original', class: 'indigo darken-2 white--text' },
           { text: 'Cantidad', value: 'cantidad', class: 'indigo darken-2 white--text' },
           { text: 'Indispensable', value: 'esIndispensable', class: 'indigo darken-2 white--text' },
-          { text: 'Ver Documento', value: 'documento', class: 'indigo darken-2 white--text' },
-          { text: 'Validar', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
+          { text: 'Ver ', value: 'documento', class: 'indigo darken-2 white--text' },
+          { text: 'Validar Doc', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
         ],
 
         requisitosPart : [
@@ -137,7 +141,8 @@
         			original: 'ambos',
         			esIndispensable: true,
         			entregado: true,
-              validado: true
+              validado: true,
+              documento: 'http://www.africau.edu/images/default/sample.pdf'
         		},
         		{
         			name: 'Título de Licenciatura',
@@ -145,7 +150,8 @@
         			original: 'original',
         			esIndispensable: true,
         			entregado: true,
-              validado: false	
+              validado: false,
+              documento: 'http://www.africau.edu/images/default/sample.pdf'
         		},{
 
         			name: 'CURP',
@@ -153,7 +159,8 @@
         			original: 'copia',
         			esIndispensable: true,
         			entregado: false,
-              validado: false
+              validado: false,
+              documento: ''
         		}
         ],
 
@@ -165,6 +172,13 @@
 	        if (!item.validado) return 'red'
 	        else return 'green'
 	       },
+       verDocumento(item){
+        //let route = this.$router.resolve({ path: item.documento });
+         window.open(item.documento);
+       },
+       validarDocumento(item){
+        alert("aca se validará el documento "+item.documento)
+       }
     	},
 	}
 </script>
