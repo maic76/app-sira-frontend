@@ -13,10 +13,13 @@ import qs from 'qs';
 // If you don't need the styles, do not connect
 import 'sweetalert2/dist/sweetalert2.min.css';
 Vue.use(VueSweetalert2);
+
+Vue.use(require('vue-chartist'));
  
 Vue.use(VueAxios, axios)
 // Agregamos la URL base de nuestra API BACKEND de SIRA
 axios.defaults.baseURL = 'http://localhost:8081/';
+
 
 Vue.config.productionTip = false
 

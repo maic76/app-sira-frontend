@@ -11,6 +11,8 @@ import MisConvocatorias from '@/components/MisConvocatorias.vue'
 import Participacion from '@/components/Participacion.vue'
 import AspirantesConvocatoria from '@/components/AspirantesPorConvocatoria.vue'
 import ParticipacionValidaDocs from '@/components/ParticipacionValidaDocs.vue'
+//import MaterialChartCard from '@/components/MaterialChartCard.vue'
+import Dashboard from '@/views/dashboard/Dashboard.vue'
 
 Vue.use(VueRouter)
 
@@ -68,6 +70,12 @@ const routes = [
     path: '/seguimiento/convocatoria',
     name: 'AspirantesConvocatoria',
     component: AspirantesConvocatoria
+
+  },
+  {
+    path: '/seguimiento/dashboard',
+    name: 'DashboardDashboard',
+    component: Dashboard
 
   },
   {
