@@ -85,9 +85,9 @@
             
                <v-btn color="primary"  dark  class="mb-2 "
                
-                @click="dialog=false"
+                @click="$router.go(-1)"
               >
-                Cerrar
+                Regresar
               </v-btn>
             </div>
             </v-card-actions>
@@ -150,6 +150,7 @@
 
        verParticipacion(item){
           console.log(item);
+          this.$router.push('convocatoria/participacion')
        }
     	},
 	}

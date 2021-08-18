@@ -60,30 +60,8 @@ const routes = [
 
   },
    
-   {
-    path: '/aspirantes/participacion',
-    name: 'Participacion',
-    component: Participacion
-
-  },
-  {
-    path: '/seguimiento/convocatoria',
-    name: 'AspirantesConvocatoria',
-    component: AspirantesConvocatoria
-
-  },
-  {
-    path: '/seguimiento/dashboard',
-    name: 'DashboardDashboard',
-    component: Dashboard
-
-  },
-  {
-    path: '/seguimiento/convocatoria/participacion',
-    name: 'ParticipacionValidaDocs',
-    component: ParticipacionValidaDocs
-
-  },
+  
+ 
     {
     path: '/aspirantes',
     name: 'Aspirantes',
@@ -97,8 +75,42 @@ const routes = [
         {
           path: 'misparticipaciones',          
           component: MisConvocatorias
-        }
+        },
+        {
+          path: 'participacion',
+          name: 'Participacion',
+          component: Participacion
+
+         },
         
+      ]
+  },
+
+    {
+    path: '/seguimiento',
+    name: 'Seguimiento',
+    component: () => import(/* webpackChunkName: "home" */ '../views/Seguimiento.vue'),
+       children: [
+        
+        {
+           path: 'dashboard',           
+           name: 'DashboardDashboard',
+          component: Dashboard
+        },
+         {
+            path: 'convocatoria',
+            name: 'AspirantesConvocatoria',
+            component: AspirantesConvocatoria
+
+          },
+         
+          {
+            path: 'convocatoria/participacion',
+            name: 'ParticipacionValidaDocs',
+            component: ParticipacionValidaDocs
+
+          }
+               
       ]
   },
  

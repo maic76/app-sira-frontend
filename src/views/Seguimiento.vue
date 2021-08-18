@@ -1,5 +1,5 @@
 <template >
-<div id="inspire">
+<div>
 	<v-navigation-drawer v-model="drawer" app class="indigo lighten-4">
        <v-list-item color="indigo">
         <v-list-item-content>
@@ -7,7 +7,7 @@
             SIRA
           </v-list-item-title>
           <v-list-item-subtitle>
-            Aspirante
+            Seguimiento
           </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
@@ -62,11 +62,11 @@
     data () {
       return {
         items: [
-          { title: 'Convocatorias Disponibles', icon: 'mdi-help-box', link :'/aspirantes/convocatorias' },
-          { title: 'Mis participaciones', icon: 'mdi-help-box', link :'/aspirantes/misparticipaciones' }
+          { title: 'Dashboard', icon: 'mdi-help-box', link :'/seguimiento/dashboard' },
+          
          ],
-        right: null,
-        drawer:null
+        right: false,
+        drawer:false
       }
     },
   }

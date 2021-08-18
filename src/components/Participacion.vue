@@ -81,17 +81,17 @@
          <v-card-actions class="text-center" >
               <v-spacer></v-spacer>
               <div >
-              <v-btn color="primary"  dark  class="mb-2 "
+              <v-btn color="green"  dark  class="mb-2 "
                
                 @click=""
               >
                 Declinar participación
               </v-btn>
-               <v-btn color="primary"  dark  class="mb-2 "
+               <v-btn color="green"  dark  class="mb-2 "
                
-                @click="dialog=false"
+                @click="$router.go(-1)"
               >
-                Cerrar
+                Regresar
               </v-btn>
             </div>
             </v-card-actions>

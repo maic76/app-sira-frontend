@@ -1,5 +1,6 @@
   <template>
   <v-container>
+    <h3>Mis participaciones:</h3>
     <v-col
             v-for="(convocatoria, i) in convocatorias"
             :key="i"
@@ -27,7 +28,7 @@
                         md="5"
 
                       >
-                       <p class="font-weight-bold mb-0">Entregado:</p>                
+                       <p class="font-weight-bold mb-0">Requisitos:</p>                
                        <v-chip
                            close-icon="mdi-close-outline"
                          color="red"
@@ -52,10 +53,11 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-            text
-            color="indigo accent-4"
+            
+            color="green white--text"
+            @click="verParticipacion()"
           >
-            Ver detalle
+            Subir requisitos
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -123,7 +125,7 @@
                    headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/participaciones/aspirantes/1",           
+      this.axios.get("/api/participaciones/",           
                    config
                   )
                 .then(response => {
@@ -138,6 +140,11 @@
                 });  
 
        },
+
+       verParticipacion(){
+        console.log('hola')
+          this.$router.push('/aspirantes/participacion')
+       }
     }
 
   }

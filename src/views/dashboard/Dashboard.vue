@@ -4,6 +4,7 @@
     <v-container>
 
       <v-layout row wrap >
+
         <v-flex sm6 xs12 md6 lg3>
           <v-card class="ma-3">
             <v-list-item>
@@ -24,6 +25,7 @@
             </v-card-actions>
           </v-card>
         </v-flex>
+
             <v-flex sm6 xs12 md6 lg3>
           <v-card class="ma-3">
             <v-list-item>
@@ -44,6 +46,7 @@
             </v-card-actions>
           </v-card>
         </v-flex>
+
             <v-flex sm6 xs12 md6 lg3>
           <v-card class="ma-3">
             <v-list-item>
@@ -64,7 +67,114 @@
             </v-card-actions>
           </v-card>
         </v-flex>
+
+       <v-divider></v-divider>
+
+       
+              <v-spacer></v-spacer>
+
+                <v-row>   
+
+                     
+                  <v-col
+                      cols="12"
+                      sm="12"
+                      md="12"
+                      >
+                      <template>
+
+                        <v-data-table
+                          :headers="headersConvocatorias"
+                          :items="convocatoriasActivas"
+                          :items-per-page="5"
+                          class="elevation-1"
+
+                        >
+
+                          <template v-slot:top>
+                            <v-toolbar flat color="indigo accent-3 white--text fix"  >
+                              <v-toolbar-title class="fix">Convocatorias Activas</v-toolbar-title>
+                              <v-divider
+                                class="mx-4"
+                                inset
+                                vertical
+
+                              ></v-divider>
+
+                                </v-toolbar>
+                           </template>
+
+                          <template v-slot:item.actions="{ item }">
+                            <v-icon
+                              color="teal"
+                              class="mr-2"
+                              @click="verParticipantes(item)"
+                            >
+                               mdi-account-group
+                            </v-icon>     
+                            </template>
+                        </v-data-table>
+                      </template>
+                </v-col>
+
+                 <v-spacer></v-spacer>
+               </v-row>
+            
       </v-layout>
     </v-container>    
   </div>
 </template>
+
+<script >
+
+   export default {
+
+    created () {
+      this.initialize()
+    },
+
+    data: () => ({
+     headersConvocatorias: [
+        {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
+        { text: 'Convocatoria ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
+        { text: 'Fecha de Inicio', value: 'fechaInicio', class: 'indigo accent-2 white--text' },
+        { text: 'Fecha de Término', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
+        { text: 'Cupo', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
+         { text: 'Ver Aspirantes', value: 'actions', class: 'indigo accent-2 white--text' }
+      ],
+
+      convocatoriasActivas : []
+    }),
+
+     methods: {
+      initialize () {
+
+         let token = localStorage.getItem('token');
+             
+         let config = {
+                        headers: { Authorization: `Bearer ${token}` }
+                      };
+
+          this.axios.get("/api/convocatorias",           
+                       config
+                      )
+                    .then(response => {
+                       console.log(response);
+                       //console.log(response.headers.authorization);
+                       //actualizamos la vista
+                         this.convocatoriasActivas=response.data;   
+                      })
+                    .catch(error => {
+                      this.errorMessage = error.message;
+                      console.error("There was an error!", error);
+                    });  
+        },
+
+        verParticipantes(item){
+          console.log(item.id)
+          this.$router.push('/seguimiento/convocatoria')
+        }
+    }
+
+  }
+</script>
