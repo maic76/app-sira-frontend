@@ -2,7 +2,7 @@
   <v-container>
     <h3>Mis participaciones:</h3>
     <v-col
-            v-for="(convocatoria, i) in convocatorias"
+            v-for="(participacion, i) in participaciones"
             :key="i"
             cols="12"
           >
@@ -14,9 +14,9 @@
       tile
       >
       <v-card-title class="indigo darken-4 white--text ">
-        <div class="subtitle-1">{{convocatoria.convocatoria.programaEducativo.nombre}}</div>
+        <div class="subtitle-1">{{participacion.convocatoria.programaEducativo.nombre}}</div>
           <p class="text-h5 white--text fix">
-            {{convocatoria.convocatoria.nombre}}
+            {{participacion.convocatoria.nombre}}
           </p>
          
       </v-card-title>
@@ -28,7 +28,7 @@
                         md="5"
 
                       >
-                       <p class="font-weight-bold mb-0">Requisitos:</p>                
+                       <p class="font-weight-bold mb-0">Requisitos entregados:</p>                
                        <v-chip
                            close-icon="mdi-close-outline"
                          color="red"
@@ -42,12 +42,12 @@
                         md="7"
                             class="text-center"
                       >                
-                       <p class="font-weight-bold mb-0">Fecha Límite:</p>
+                       <p class="font-weight-bold mb-0">Fecha Límite para subir documentos:</p>
                        <v-chip  text-color="white"
                          
                          color="primary"
                           class="ma-1"
-                      >{{convocatoria.convocatoria.fechaTermino}}</v-chip>                
+                      >{{participacion.convocatoria.fechaTermino}}</v-chip>                
                 </v-col>
               </v-row>
         </v-card-text>
@@ -55,7 +55,7 @@
           <v-btn
             
             color="green white--text"
-            @click="verParticipacion()"
+            @click="verParticipacion(participacion)"
           >
             Subir requisitos
           </v-btn>
@@ -63,7 +63,7 @@
       </v-card>
   </v-col>
 
-  <v-card v-if="convocatorias.length==0"
+  <v-card v-if="participaciones.length==0"
         class="mx-auto"
         max-width="500"
          elevation="8"
@@ -73,7 +73,7 @@
       <v-card-title class="indigo darken-4 white--text ">
      
           <p class="text-h5 white--text fix">
-            Mis Convocatorias
+            Mis Participaciones
           </p>
          
       </v-card-title>
@@ -108,7 +108,7 @@
 
    export default {
     data: () => ({
-          convocatorias:[]
+          participaciones:[]
     }),
 
     created () {
@@ -132,7 +132,7 @@
                    console.log(response);
                    //console.log(response.headers.authorization);
                    //actualizamos la vista
-                     this.convocatorias=response.data;   
+                     this.participaciones=response.data;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;
@@ -141,8 +141,8 @@
 
        },
 
-       verParticipacion(){
-        console.log('hola')
+       verParticipacion(participacion){
+        console.log(participacion)
           this.$router.push('/aspirantes/participacion')
        }
     }
