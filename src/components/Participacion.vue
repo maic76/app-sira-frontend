@@ -8,8 +8,16 @@
               <v-card-title
                     class="text-h5 fix white--text "
                    
-                    >{{tituloProg}}</v-card-title>  
+                    >{{tituloProg}} </v-card-title>  
                     <v-card-subtitle class="font-weight-regular white--text">{{tituloConv}}</v-card-subtitle>
+                     <v-card-subtitle class="font-weight-regular white--text">
+                        <v-chip
+                            :color="getColorStatus(total,entregados)"
+                            dark
+                           >
+                              Entregados: {{entregados}} de {{total}}
+                          </v-chip>
+                     </v-card-subtitle>
             </div>
              <v-avatar
                   class="ma-3"
@@ -64,13 +72,22 @@
 			      </v-chip>
 			    </template>
 
-			        <template v-slot:item.actions="{ item }">
+			        <template v-slot:item.id="{ item }">
 				
               <v-file-input
                 show-size
                 label="Archivo PDF"
+                @change="onFileSelected(item,$event)"
               ></v-file-input>
             
+               <v-icon
+                    color="teal"
+                    class="mr-2"
+                    v-if="seleccionado==item.id"
+                  @click="onUpload(item.id,$event)"
+                >
+                    mdi-upload
+                </v-icon>     
 				     
 				    </template>
 
@@ -101,12 +118,12 @@
 	
 	export default {
 		data : () => ({
-			   tituloConv: 'Convocatoria Test 2021',
-		      tituloProg: 'Programa de Ejemplo',
-		      fechaInicio: '20/02/2021',
-		      fechaTermino:'24/03/2021',
+			   tituloConv: '',
+		      tituloProg: '',
+		      fechaInicio: '',
+		      fechaTermino:'',
 		      fechaExamen:'28/03/2021',
-		      logo:'http://www.lania.mx/wp-content/uploads/2020/05/thumbnail-1.png',
+		      logo:'',
 		      total: 5,
 		      entregados: 2,
 
@@ -115,47 +132,122 @@
             text: 'Requisito ',
             align: 'start',
             sortable: false,
-            value: 'name',
+            value: 'requisitoConvocatoria.requisito.nombre',
            class: ' white--text  indigo darken-2'
           },
-          { text: 'Original/copia', value: 'original', class: 'indigo darken-2 white--text' },
-          { text: 'Cantidad', value: 'cantidad', class: 'indigo darken-2 white--text' },
-          { text: 'Indispensable', value: 'esIndispensable', class: 'indigo darken-2 white--text' },
+          { text: 'Original/copia', value: 'requisitoConvocatoria.original', class: 'indigo darken-2 white--text' },
+          { text: 'Cantidad', value: 'requisitoConvocatoria.cantidad', class: 'indigo darken-2 white--text' },
+         // { text: 'Indispensable', value: 'requisitoConvocatoria.indispensable', class: 'indigo darken-2 white--text' },
           { text: 'Entregado', value: 'entregado', class: 'indigo darken-2 white--text' },
-          { text: 'Subir archivo', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
+          { text: 'Subir archivo', value: 'id', sortable: false, class: 'indigo darken-2 white--text' }, //enviando el ID de PArticipacion Req Conv
         ],
 
-        requisitosPart : [
-        		{
-        			name: 'Certificado de Licenciatura',
-        			cantidad: 2,
-        			original: 'ambos',
-        			esIndispensable: true,
-        			entregado: true
-        		},
-        		{
-        			name: 'Título de Licenciatura',
-        			cantidad: 1,
-        			original: 'original',
-        			esIndispensable: true,
-        			entregado: true	
-        		},{
+        requisitosPart : [ ],
 
-        			name: 'CURP',
-        			cantidad: 1,
-        			original: 'copia',
-        			esIndispensable: true,
-        			entregado: false
-        		}
-        ],
+        selectedFile: null,
+        seleccionado: null,
 
 		}),
 
+    created () {
+      this.initialize()
+    },
+
 	 methods: {
+    
+
+     initialize () {
+      console.log("entrando a initialize");
+
+      let token = localStorage.getItem('token');
+         
+      let config = {
+                   headers: { Authorization: `Bearer ${token}` }
+                  };
+
+      this.axios.get(`/api/participaciones/${this.$route.params.id}`,           
+                   config
+                  )
+                .then(response => {
+                   console.log(response);
+                   //console.log(response.headers.authorization);
+                   //actualizamos la vista
+                     this.requisitosPart=response.data.participacion.participacionRequisitosConvocatoria
+                     this.tituloProg=response.data.participacion.convocatoria.programaEducativo.nombre
+                     this.tituloConv=response.data.participacion.convocatoria.nombre
+                     this.fechaInicio=response.data.participacion.convocatoria.fechaInicio
+                     this.fechaTermino=response.data.participacion.convocatoria.fechaTermino
+                     this.logo=response.data.participacion.convocatoria.programaEducativo.src
+                     this.total=response.data.total
+                     this.entregados=response.data.entregados
+
+                  })
+                .catch(error => {
+                  this.errorMessage = error.message;
+                  console.error("There was an error!", error);
+                });  
+
+       },
+
+       onFileSelected(item,file){
+         
+          if(file){
+             console.log(file)
+            console.log(file.name)
+             this.selectedFile = file;
+            this.seleccionado = item.id        
+          }else{
+            this.seleccionado = null
+          }
+         
+          //this.fileSelected = true;
+       },
+
+       selected(item){
+          this.seleccionado = item.id
+       },
+
+       onUpload(idPrc,event){
+          console.log("subir archivo"+ this.selectedFile.name)
+          const fd = new FormData();
+          fd.append('file', this.selectedFile, this.selectedFile.name)
+          let token = localStorage.getItem('token');
+         
+          let config = {
+                   headers: { Authorization: `Bearer ${token}` }
+                  };
+
+          this.axios.put('/api/participaciones/'+idPrc,
+                           fd,                            
+                          config,
+                          {
+                              onUploadProgress: uploadEvent =>{
+                                  console.log("Progreso de Subida: " + Math.round(uploadEvent.loaded / uploadEvent.total * 100) + '%' )
+                              }
+                           },
+                         ).then(response => {
+                                 console.log(response);
+                                 //console.log(response.headers.authorization);
+                                 //actualizamos la vista                 
+
+                                })
+                              .catch(error => {
+                                this.errorMessage = error.message;
+                                console.error("There was an error!", error);
+                              });  
+
+       },
+
+
 	      getColor (entregado) {
 	        if (!entregado) return 'red'
 	        else if (entregado) return 'green'
 	       },
+
+        getColorStatus (total,entregados) {
+          if (total>entregados) return 'red'
+          else return 'green'
+         },
     	},
 	}
 </script>

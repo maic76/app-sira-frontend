@@ -77,7 +77,7 @@ const routes = [
           component: MisConvocatorias
         },
         {
-          path: 'participacion',
+          path: 'participacion/:id',
           name: 'Participacion',
           component: Participacion
 

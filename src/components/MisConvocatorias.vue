@@ -143,7 +143,7 @@
 
        verParticipacion(participacion){
         console.log(participacion)
-          this.$router.push('/aspirantes/participacion')
+          this.$router.push('/aspirantes/participacion/'+participacion.id)
        }
     }
 
