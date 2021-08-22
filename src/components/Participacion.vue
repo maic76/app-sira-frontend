@@ -84,7 +84,7 @@
                     color="teal"
                     class="mr-2"
                     v-if="seleccionado==item.id"
-                  @click="onUpload(item.id,$event)"
+                  @click="onUpload(item.id,$event,idParticipacion)"
                 >
                     mdi-upload
                 </v-icon>     
@@ -126,6 +126,7 @@
 		      logo:'',
 		      total: 5,
 		      entregados: 2,
+          idParticipacion: '',
 
 	   headers: [
           {
@@ -180,6 +181,7 @@
                      this.logo=response.data.participacion.convocatoria.programaEducativo.src
                      this.total=response.data.total
                      this.entregados=response.data.entregados
+                     this.idParticipacion = response.data.participacion.id
 
                   })
                 .catch(error => {
@@ -207,7 +209,7 @@
           this.seleccionado = item.id
        },
 
-       onUpload(idPrc,event){
+       onUpload(idPrc,event,idParticipcion){
           console.log("subir archivo"+ this.selectedFile.name)
           const fd = new FormData();
           fd.append('file', this.selectedFile, this.selectedFile.name)
@@ -217,7 +219,7 @@
                    headers: { Authorization: `Bearer ${token}` }
                   };
 
-          this.axios.put('/api/participaciones/'+idPrc,
+          this.axios.put('/api/participaciones/'+ idParticipcion + '/prc/' +idPrc,
                            fd,                            
                           config,
                           {
@@ -227,6 +229,8 @@
                            },
                          ).then(response => {
                                  console.log(response);
+                                 this.total= response.data.total
+                                 this.entregados = response.data.entregados
                                  //console.log(response.headers.authorization);
                                  //actualizamos la vista                 
 
