@@ -51,15 +51,21 @@
          <v-data-table
 
 			    :headers="headers"
-			    :items="aspirantes"
+			    :items="participaciones"
 			    class="elevation-1 "
 			  >
-			    <template v-slot:item.entregados="{ item }">
+
+         <template v-slot:item.aspirante.nombre="{ item }">
+           <p>{{item.aspirante.nombre}} {{item.aspirante.apellido}}</p>
+          </template>
+       
+
+			    <template v-slot:item.estatus="{ item }">
 			      <v-chip
-			        :color="getColor(total,item.entregados)"
+			        :color="getColorStatus(item.estatus)"
 			        dark
 			       >
-			          {{item.entregados}} de {{total}}
+			          {{item.estatus}}
 			      </v-chip>
 			    </template>
 
@@ -95,6 +101,8 @@
 </template>
 <script type="text/javascript">
 	
+   import {axios} from "axios";
+
 	export default {
 		data : () => ({
 			   tituloConv: 'Participantes de la Convocatoria Test 2021',
@@ -111,18 +119,18 @@
             text: 'Aspirante ',
             align: 'start',
             sortable: false,
-            value: 'name',
+            value: 'aspirante.nombre',
            class: ' white--text  indigo darken-2'
           },
-          { text: 'Escuela Procedencia', value: 'escuela', class: 'indigo darken-2 white--text' },
-          { text: 'Doc. Entregados', value: 'entregados', class: 'indigo darken-2 white--text' },
+          { text: 'Escuela Procedencia', value: 'aspirante.escuela', class: 'indigo darken-2 white--text' },
+          { text: 'Estatus', value: 'estatus', class: 'indigo darken-2 white--text' },
           { text: 'Ver documentos', value: 'actions', class: 'indigo darken-2 white--text' }
         ],
 
         aspirantes : [
         		{
               id: 1,
-        			name: 'Juan Pérez Reyes',
+        			name: '',
         			escuela: 'Universidad de Xalapa',
         			entregados: 3
         			
@@ -140,18 +148,85 @@
         		}
         ],
 
+        participaciones : [
+             {
+              id:1,
+              aspirante: {
+                id: 1,
+                nombre: "Miguel Angel",
+                apellido: "Landa Lopez",
+                escuela: "Universidad Veracruzana",
+                noWhatsapp:"2288470233"
+              },
+              estatus:"validación de documentos"
+            },
+            {
+              id:2,
+              aspirante: {
+                id: 2,
+                nombre: "Juan",
+                apellido: "Pérez Reyes",
+                escuela: "Universidad Veracruzana",
+                noWhatsapp:"23322422"
+              },
+              estatus:"subir requisitos"
+            },
+            {
+              id:3,
+              aspirante: {
+                id: 3,
+                nombre: "Mariana",
+                apellido: "Rivas Portilla",
+                escuela: "Tecnológico de Xalapa",
+                noWhatsapp:"23332321"
+              },
+              estatus:"subir requisitos"
+            }
+        ],
+
 		}),
 
+      created () {
+      this.initialize()
+    },
+
+
 	 methods: {
-	      getColor (total,entregados) {
-	        if (total>entregados) return 'red'
-	        else return 'green'
-	       },
+	       getColorStatus (estatus) {
+          if (estatus=='subir requisitos' || estatus == 'en espera de documentos') return 'red darken-1'
+          else return 'indigo accent-2'
+         },
 
        verParticipacion(item){
           console.log(item);
           this.$router.push('convocatoria/participacion')
-       }
-    	},
+       },
+    
+
+
+     initialize () {
+
+      let token = localStorage.getItem('token');
+         
+      let config = {
+                   headers: { Authorization: `Bearer ${token}` }
+                  };
+
+      this.axios.get("/api/participaciones/",           
+                   config
+                  )
+                .then(response => {
+                   console.log(response);
+                   //console.log(response.headers.authorization);
+                   //actualizamos la vista
+                     //this.participaciones=response.data;   
+                  })
+                .catch(error => {
+                  this.errorMessage = error.message;
+                  console.error("There was an error!", error);
+                });  
+
+       },
+    },
 	}
 </script>

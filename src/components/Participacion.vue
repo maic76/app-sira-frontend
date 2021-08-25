@@ -77,7 +77,18 @@
               <v-file-input
                 show-size
                 label="Archivo PDF"
+                v-if="!item.rutaArchivo"
                 @change="onFileSelected(item,$event)"
+                accept=".pdf"
+                 :key="componentKey"
+              ></v-file-input>
+
+              <v-file-input
+                show-size
+                label="Cambiar Archivo PDF"
+                v-else="item.rutaArchivo"
+                @change="onFileSelected(item,$event)"
+                accept=".pdf"
               ></v-file-input>
             
                <v-icon
@@ -90,6 +101,20 @@
                 </v-icon>     
 				     
 				    </template>
+
+             <template v-slot:item.rutaArchivo="{ item }">
+                <v-icon
+                    color="teal"
+                    class="mr-2"
+                     v-if="item.rutaArchivo"
+
+                    @click="verDocumento(item.rutaArchivo)"
+                >
+                mdi-eye 
+                </v-icon>    
+               
+                    
+          </template>
 
  		 </v-data-table>
 
@@ -141,12 +166,14 @@
          // { text: 'Indispensable', value: 'requisitoConvocatoria.indispensable', class: 'indigo darken-2 white--text' },
           { text: 'Entregado', value: 'entregado', class: 'indigo darken-2 white--text' },
           { text: 'Subir archivo', value: 'id', sortable: false, class: 'indigo darken-2 white--text' }, //enviando el ID de PArticipacion Req Conv
+          { text: 'Ver Archivo', value: 'rutaArchivo', sortable: false, class: 'indigo darken-2 white--text' }, 
         ],
 
         requisitosPart : [ ],
 
         selectedFile: null,
         seleccionado: null,
+        componentKey: 0
 
 		}),
 
@@ -182,6 +209,9 @@
                      this.total=response.data.total
                      this.entregados=response.data.entregados
                      this.idParticipacion = response.data.participacion.id
+
+
+
 
                   })
                 .catch(error => {
@@ -231,6 +261,10 @@
                                  console.log(response);
                                  this.total= response.data.total
                                  this.entregados = response.data.entregados
+                                 this.requisitosPart=response.data.participacion.participacionRequisitosConvocatoria
+                                
+                                 //this.$refs.fileupload.value=null
+                                 this.componentKey++;
                                  //console.log(response.headers.authorization);
                                  //actualizamos la vista                 
 
@@ -252,6 +286,12 @@
           if (total>entregados) return 'red'
           else return 'green'
          },
+
+        verDocumento(item){
+        //let route = this.$router.resolve({ path: item.documento });
+         window.open(item);
+       },
+
     	},
 	}
 </script>

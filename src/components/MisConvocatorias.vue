@@ -1,20 +1,28 @@
   <template>
   <v-container>
-    <h3>Mis participaciones:</h3>
+    
+    <v-card
+     class="mx-auto"
+        max-width="500"
+        >
+      <v-card-title class="indigo white--text text-h5 ">
+       Mis participaciones
+      </v-card-title>
+
+      <v-card-text class="mt-2"> 
+
     <v-col
             v-for="(participacion, i) in participaciones"
             :key="i"
             cols="12"
           >
       <v-card
-        class="mx-auto"
-        max-width="500"
+       
          elevation="8"
-      shaped
-      tile
+      
       >
       <v-card-title class="indigo darken-4 white--text ">
-        <div class="subtitle-1">{{participacion.convocatoria.programaEducativo.nombre}}</div>
+        <div class="subtitle-1">{{participacion.convocatoria.programaEducativo.abreviatura}}</div>
           <p class="text-h5 white--text fix">
             {{participacion.convocatoria.nombre}}
           </p>
@@ -23,31 +31,31 @@
         <v-card-text class="mt-2">
               <v-row>
                   <v-col
-                        cols="5"
-                        sm="5"
-                        md="5"
+                        cols="6"
+                        sm="6"
+                        md="6"
 
                       >
-                       <p class="font-weight-bold mb-0">Requisitos entregados:</p>                
+                       <p class="font-weight-bold mb-0">Estatus :</p>                
                        <v-chip
-                           close-icon="mdi-close-outline"
-                         color="red"
+                         
+                         :color="getColorStatus(participacion.estatus)"
                          text-color="white"
-                         class="mt-1"
-                      >2 de 4</v-chip>               
+                         class="mt-1 fix"
+                      >{{participacion.estatus}}</v-chip>               
                 </v-col>
                  <v-col
-                        cols="7"
-                        sm="7"
-                        md="7"
+                        cols="6"
+                        sm="6"
+                        md="6"
                             class="text-center"
                       >                
-                       <p class="font-weight-bold mb-0">Fecha Límite para subir documentos:</p>
+                       <p class="font-weight-bold mb-0">Fecha Límite:</p>
                        <v-chip  text-color="white"
                          
                          color="primary"
                           class="ma-1"
-                      >{{participacion.convocatoria.fechaTermino}}</v-chip>                
+                      >{{ new Date(participacion.convocatoria.fechaTermino).toLocaleString("es-MX",{dateStyle:"medium"}) }}</v-chip>                
                 </v-col>
               </v-row>
         </v-card-text>
@@ -57,7 +65,7 @@
             color="green white--text"
             @click="verParticipacion(participacion)"
           >
-            Subir requisitos
+            Ver detalle
           </v-btn>
         </v-card-actions>
       </v-card>
@@ -90,15 +98,18 @@
         </v-card-text>
         <v-card-actions>
           <v-btn
-           class="ma-4"
+          class="mx-auto"
             text
             color="indigo accent-4"
+
           >
             Consultar convocatorias
           </v-btn>
         </v-card-actions>
       </v-card>
 
+</v-card-text>
+</v-card>
 </v-container>
 </template>
 
@@ -108,7 +119,9 @@
 
    export default {
     data: () => ({
-          participaciones:[]
+          participaciones:[],
+          total:'',
+          entregados:''
     }),
 
     created () {
@@ -144,7 +157,12 @@
        verParticipacion(participacion){
         console.log(participacion)
           this.$router.push('/aspirantes/participacion/'+participacion.id)
-       }
+       },
+
+        getColorStatus (estatus) {
+          if (estatus=='subir requisitos' || estatus == 'en espera de documentos') return 'red darken-1'
+          else return 'indigo accent-2'
+         },
     }
 
   }
