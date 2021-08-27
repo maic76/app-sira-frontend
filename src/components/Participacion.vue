@@ -123,12 +123,12 @@
          <v-card-actions class="text-center" >
               <v-spacer></v-spacer>
               <div >
-              <v-btn color="green"  dark  class="mb-2 "
+           <!--    <v-btn color="green"  dark  class="mb-2 "
                
                 @click=""
               >
                 Declinar participación
-              </v-btn>
+              </v-btn> -->
                <v-btn color="green"  dark  class="mb-2 "
                
                 @click="$router.go(-1)"

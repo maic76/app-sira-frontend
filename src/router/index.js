@@ -98,14 +98,14 @@ const routes = [
           component: Dashboard
         },
          {
-            path: 'convocatoria',
+            path: 'convocatoria/:id',
             name: 'AspirantesConvocatoria',
             component: AspirantesConvocatoria
 
           },
          
           {
-            path: 'convocatoria/participacion',
+            path: 'convocatoria/participacion/:id',
             name: 'ParticipacionValidaDocs',
             component: ParticipacionValidaDocs
 

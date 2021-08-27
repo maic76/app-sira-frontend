@@ -172,7 +172,7 @@
 
         verParticipantes(item){
           console.log(item.id)
-          this.$router.push('/seguimiento/convocatoria')
+          this.$router.push('/seguimiento/convocatoria/'+item.id)
         }
     }
 

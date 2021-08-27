@@ -53,6 +53,7 @@
 			    :headers="headers"
 			    :items="participaciones"
 			    class="elevation-1 "
+          no-data-text="No se encontraron participantes en esta convocatoria"
 			  >
 
          <template v-slot:item.aspirante.nombre="{ item }">
@@ -199,7 +200,7 @@
 
        verParticipacion(item){
           console.log(item);
-          this.$router.push('convocatoria/participacion')
+          this.$router.push('/seguimiento/convocatoria/participacion/'+item.id)
        },
     
 
@@ -212,14 +213,14 @@
                    headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/participaciones/",           
+      this.axios.get(`/api/convocatorias/${this.$route.params.id}/participaciones`,           
                    config
                   )
                 .then(response => {
                    console.log(response);
                    //console.log(response.headers.authorization);
                    //actualizamos la vista
-                     //this.participaciones=response.data;   
+                     this.participaciones=response.data.convocatoria.participaciones;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;

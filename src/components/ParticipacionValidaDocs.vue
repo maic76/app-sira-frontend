@@ -64,11 +64,11 @@
 			      </v-chip>
 			    </template>
 
-			     <template v-slot:item.documento="{ item }">
+			     <template v-slot:item.rutaArchivo="{ item }">
                 <v-icon v-if="item.entregado"
                     color="teal"
                     class="mr-2"
-                    @click="verDocumento(item)"
+                    @click="verDocumento(item.rutaArchivo)"
                   >
                     mdi-eye
                   </v-icon>
@@ -87,6 +87,16 @@
                  <span v-else>Validar</span>
             </v-btn>
             </template>
+
+             <template v-slot:item.requisitoConvocatoria.indispensable="{ item }">
+            <v-chip
+              :color="getColorIndisp(item.requisitoConvocatoria.indispensable)"
+              dark
+             >
+                 <span v-if="item.requisitoConvocatoria.indispensable">SI</span>
+                 <span v-else>NO</span>
+            </v-chip>
+          </template> 
 
  		 </v-data-table>
 
@@ -118,8 +128,10 @@
 		      logo:'http://www.lania.mx/wp-content/uploads/2020/05/thumbnail-1.png',
 		      total: 5,
 		      entregados: 2,
+          idParticipacion: '',
+          requisitoConvocatoria: {indispensable: true},
 
-	   headers: [
+	 /*  headers: [
           {
             text: 'Requisito ',
             align: 'start',
@@ -132,6 +144,21 @@
           { text: 'Indispensable', value: 'esIndispensable', class: 'indigo darken-2 white--text' },
           { text: 'Ver ', value: 'documento', class: 'indigo darken-2 white--text' },
           { text: 'Validar Doc', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
+        ],*/
+
+         headers: [
+          {
+            text: 'Requisito ',
+            align: 'start',
+            sortable: false,
+            value: 'requisitoConvocatoria.requisito.nombre',
+           class: ' white--text  indigo darken-2'
+          },
+          { text: 'Original/copia', value: 'requisitoConvocatoria.original', class: 'indigo darken-2 white--text' },
+          { text: 'Cantidad', value: 'requisitoConvocatoria.cantidad', class: 'indigo darken-2 white--text' },
+          { text: 'Indispensable', value: 'requisitoConvocatoria.indispensable', class: 'indigo darken-2 white--text' },
+          { text: 'Ver ', value: 'rutaArchivo', class: 'indigo darken-2 white--text' },
+          { text: 'Validar Doc', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
         ],
 
         requisitosPart : [
@@ -139,7 +166,7 @@
         			name: 'Certificado de Licenciatura',
         			cantidad: 2,
         			original: 'ambos',
-        			esIndispensable: true,
+        			indispensable: true,
         			entregado: true,
               validado: true,
               documento: 'http://www.africau.edu/images/default/sample.pdf'
@@ -148,7 +175,7 @@
         			name: 'Título de Licenciatura',
         			cantidad: 1,
         			original: 'original',
-        			esIndispensable: true,
+        			indispensable: true,
         			entregado: true,
               validado: false,
               documento: 'http://www.africau.edu/images/default/sample.pdf'
@@ -157,7 +184,7 @@
         			name: 'CURP',
         			cantidad: 1,
         			original: 'copia',
-        			esIndispensable: true,
+        			indispensable: true,
         			entregado: false,
               validado: false,
               documento: ''
@@ -166,19 +193,73 @@
 
 		}),
 
+    created () {
+      this.initialize()
+    },
+
 	 methods: {
+
+    initialize () {
+          console.log("entrando a initialize");
+
+          let token = localStorage.getItem('token');
+             
+          let config = {
+                       headers: { Authorization: `Bearer ${token}` }
+                      };
+
+          this.axios.get(`/api/participaciones/${this.$route.params.id}`,           
+                       config
+                      )
+                    .then(response => {
+                       console.log(response);
+                       //console.log(response.headers.authorization);
+                       //actualizamos la vista
+                         this.requisitosPart=response.data.participacion.participacionRequisitosConvocatoria
+                         //this.tituloProg=response.data.participacion.convocatoria.programaEducativo.nombre                         
+                         this.tituloConv=response.data.participacion.convocatoria.nombre
+                         this.fechaInicio=response.data.participacion.convocatoria.fechaInicio
+                         this.fechaTermino=response.data.participacion.convocatoria.fechaTermino
+                         this.logo=response.data.participacion.convocatoria.programaEducativo.src
+                         this.total=response.data.total
+                         this.entregados=response.data.entregados
+                         this.idParticipacion = response.data.participacion.id
+                         this.nombreAspirante = response.data.participacion.aspirante.nombre+' '+response.data.participacion.aspirante.apellido
+                         this.escuela = response.data.participacion.aspirante.escuela
+                         this.noWhatsapp = response.data.participacion.aspirante.noWhatsapp
+
+
+                      })
+                    .catch(error => {
+                      this.errorMessage = error.message;
+                      console.error("There was an error!", error);
+                    });  
+
+       },
+
 	      getColor (item) {
-          console.log(item)
+          //console.log(item)
 	        if (!item.validado) return 'red'
 	        else return 'green'
 	       },
+
+       getColorIndisp(item){
+        console.log('el item'+item)
+           if (!item) return 'red'
+          else return 'green'
+       },
+
        verDocumento(item){
         //let route = this.$router.resolve({ path: item.documento });
-         window.open(item.documento);
+         window.open(item);
        },
+
        validarDocumento(item){
-        alert("aca se validará el documento "+item.documento)
+
+        alert("aca se validará el documento "+item)
        }
+
     	},
+
 	}
 </script>
