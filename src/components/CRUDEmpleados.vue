@@ -1,11 +1,9 @@
 <template>
-  <v-data-table :headers="headers" :items="programas" sort-by="descripcion"  class="elevation-10" :header-props="headerProps">
-    <template v-slot:item.vigencia="{ item }">
-        <span>{{ new Date(item.vigencia).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
-     </template>
+  <v-data-table :headers="headers" :items="empleados" sort-by="descripcion"  class="elevation-10" :header-props="headerProps">
+   
     <template v-slot:top>
       <v-toolbar flat color="indigo darken-2 white--text"  >
-        <v-toolbar-title class="text-h5">Programas Educativos</v-toolbar-title>
+        <v-toolbar-title class="text-h5">Usuarios Lania</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -38,73 +36,32 @@
                       label="Nombre"
                     ></v-text-field>
                   </v-col>
+                 <v-col
+                    cols="12"
+                    sm="12"
+                    md="12"
+                  >
+                    <v-text-field
+                      v-model="editedItem.apellido"
+                      label="Apellido"
+                    ></v-text-field>
+                  </v-col>
                   <v-col
                     cols="12"
                     sm="12"
                     md="12"
                   >
-                    <v-textarea
-                     outlined                   
-                      v-model="editedItem.descripcion"
-                      label="Descripcion"
-                    ></v-textarea>
-                  </v-col>
-                  <v-col
-                    cols="12"
-                    sm="6"
-                    md="4"
-                  >
-                    <v-text-field
-                      v-model="editedItem.clave"
-                      label="Clave"
-                    ></v-text-field>
+                    <v-text-field v-model="editedItem.email" :rules="emailRules" label="Correo" required></v-text-field>
                   </v-col>
                    <v-col
                       cols="12"
-                      sm="6"
-                      md="4"
+                      sm="12"
+                      md="12"
                     >
-                      <v-menu
-                        ref="menu"
-                        v-model="menu"
-                        :close-on-content-click="false"
-                        :return-value.sync="editedItem.vigencia"
-                        transition="scale-transition"
-                        offset-y
-                        min-width="auto"
-                      >
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-text-field
-                            v-model="editedItem.vigencia"
-                            label="Vigencia"
-                            prepend-icon="mdi-calendar"
-                            readonly
-                            v-bind="attrs"
-                            v-on="on"
-                          ></v-text-field>
-                        </template>
-                        <v-date-picker
-                          v-model="editedItem.vigencia"
-                          no-title
-                          scrollable
-                        >
-                          <v-spacer></v-spacer>
-                          <v-btn
-                            text
-                            color="indigo darken-2"
-                            @click="menu = false"
-                          >
-                            Cancel
-                          </v-btn>
-                          <v-btn
-                            text
-                            color="indigo darken-2"
-                            @click="$refs.menu.save(editedItem.vigencia)"
-                          >
-                            OK
-                          </v-btn>
-                        </v-date-picker>
-                      </v-menu>
+                    
+                        <v-text-field v-model="editedItem.password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="Debe tener por lo menos 6 caracteres" counter @click:append="show1 = !show1"></v-text-field>
+                   
+
                     </v-col>
                   <!-- <v-col
                     cols="12"
@@ -119,14 +76,33 @@
                   </v-col> -->
                   <v-col
                     cols="12"
-                    sm="6"
-                    md="4"
+                    sm="12"
+                    md="12"
                   >
                     <v-text-field
-                      v-model="editedItem.abreviatura"
-                      label="Abreviatura"
+                      v-model="editedItem.clave"
+                      label="Clave de Empleado"
                     ></v-text-field>
                   </v-col>
+
+                 <v-col
+                    cols="12"
+                    sm="12"
+                    md="12"
+                  >
+
+                   <v-select
+                        :items="roles"
+                         v-model="editedItem.rol"
+                         item-text="rolText"
+                         item-value="rol"
+                        label="Rol"
+                        dense
+                        solo
+                      ></v-select>         
+
+                  </v-col> 
+
                 </v-row>
               </v-container>
             </v-card-text>
@@ -197,7 +173,9 @@ import jwt_decode from "jwt-decode";
   import {axios} from "axios";
 
   export default {
+
     data: () => ({
+
       dialog: false,
       dialogDelete: false,
        headerProps: {
@@ -206,36 +184,49 @@ import jwt_decode from "jwt-decode";
       headers: [
         {text: 'No.', value:'id', class:'indigo lighten-1 white--text text-center'},
         { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo lighten-1 white--text text-center'},
-        { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo lighten-1 white--text'},
+        { text: 'Apellido', value: 'apellido', width:'300', class: 'indigo lighten-1 white--text'},
+        { text: 'Email', value: 'email', class: 'indigo lighten-1 white--text' },
         { text: 'Clave', value: 'clave', class: 'indigo lighten-1 white--text' },
-        { text: 'Vigencia', value: 'vigencia', class: 'indigo lighten-1 white--text' },
-        { text: 'Abreviatura', value: 'abreviatura', class: 'indigo lighten-1 white--text' },
+        { text: 'Rol', value: 'rol', class: 'indigo lighten-1 white--text' },
         { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo lighten-1 white--text' },
       ],
       menu: false,
-      programas: [],
+      empleados: [],
+      emailRules: [
+            v => !!v || "Requerido",
+            v => /.+@.+\..+/.test(v) || "Debe ingresar un correo válido"
+          ],
+      show1: false,
+      rules: {
+            required: value => !!value || "Requerido",
+            min: v => (v && v.length >= 6) || "Min 6 caracteres"
+          },
       editedIndex: -1,
       editedItem: {
         id:'',
         nombre: '',
-        descripcion: '',
+        apellido: '',
+        email: '',
+        password:'',      
         clave: '',
-        vigencia: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        abreviatura: '',
+        rol: '',
       },
       defaultItem: {
-        id: '',
+        id:'',
         nombre: '',
-        descripcion: '',
+        apellido: '',
+        email: '',   
+        password:'',       
         clave: '',
-        vigencia: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
-        abreviatura: '',
+        rol: '',
       },
+
+      roles: [{ rolText:'SEGUIMIENTO', rol:'SEGUIMIENTO'}, { rolText:'ADMINISTRADOR', rol:'ADMIN'}]
     }),
 
     computed: {
       formTitle () {
-        return this.editedIndex === -1 ? 'Nuevo Prog. Educativo' : 'Editar Prog. Educativo'
+        return this.editedIndex === -1 ? 'Nuevo Usuario' : 'Editar Usuario'
       },
     },
 
@@ -263,7 +254,7 @@ import jwt_decode from "jwt-decode";
                     headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/peducativos",           
+     /* this.axios.get("/api/peducativos",           
                    config
                   )
                 .then(response => {
@@ -275,7 +266,7 @@ import jwt_decode from "jwt-decode";
                 .catch(error => {
                   this.errorMessage = error.message;
                   console.error("There was an error!", error);
-                });                   
+                });                   */
 
       },
 
@@ -312,7 +303,7 @@ import jwt_decode from "jwt-decode";
                        headers: { Authorization: `Bearer ${token}` }
                      };
 
-          let indice = this.editedIndex;
+      /*    let indice = this.editedIndex;
              this.axios.delete("/api/peducativos/"+this.editedIndex,                  
                            config
                           )
@@ -327,7 +318,7 @@ import jwt_decode from "jwt-decode";
                         .catch(error => {
                           this.errorMessage = error.message;
                           console.error("There was an error!", error);
-                        });     
+                        });     */
       
       },
 
@@ -351,13 +342,13 @@ import jwt_decode from "jwt-decode";
         //TODO ....
            let token = localStorage.getItem('token');
 
-           let bodyParams = { 
+         /*  let bodyParams = { 
                     nombre: this.editedItem.nombre,                   
                     descripcion: this.editedItem.descripcion,
                     clave: this.editedItem.clave,
                     vigencia: this.editedItem.vigencia,
                     abreviatura: this.editedItem.abreviatura 
-                  };
+                  };*/
 
            let config = {
                        headers: { Authorization: `Bearer ${token}` }
@@ -368,7 +359,7 @@ import jwt_decode from "jwt-decode";
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
-                        this.axios.put("/api/peducativos/"+this.editedItem.id,                  
+                     /*   this.axios.put("/api/peducativos/"+this.editedItem.id,                  
                            bodyParams,
                            config
                           )
@@ -383,15 +374,15 @@ import jwt_decode from "jwt-decode";
                           this.errorMessage = error.message;
                           console.error("There was an error!", error);
                         });     
-                        
+                        */
                 }
              else {  //si es nuevo
 
-                console.log("entrando a guardar nuevo programa educativo");
+                console.log("entrando a guardar nuevo usuario");
                 console.log("el token es "+localStorage.getItem('token'));        
                 
 
-                      this.axios.post("/api/peducativos",                  
+                      /*this.axios.post("/api/peducativos",                  
                            bodyParams,
                            config
                           )
@@ -405,7 +396,7 @@ import jwt_decode from "jwt-decode";
                         .catch(error => {
                           this.errorMessage = error.message;
                           console.error("There was an error!", error);
-                        });                                    
+                        });     */                               
                 }                              
            this.close()              
       },

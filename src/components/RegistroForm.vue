@@ -18,7 +18,7 @@
                          	<v-text-field v-model="nowhatsapp" :rules="[rules.required]" label="No. de whatsapp" maxlength="10" required></v-text-field>
                          </v-col>
                          <v-col cols="12">
-                           <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+                           <v-text-field v-model="email" :rules="emailRules" label="Correo" required></v-text-field>
                          </v-col>
                          <v-col cols="12">
                           	<v-text-field v-model="password" :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'" :rules="[rules.required, rules.min]" :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="Debe tener por lo menos 6 caracteres" counter @click:append="show1 = !show1"></v-text-field>

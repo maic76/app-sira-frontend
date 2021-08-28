@@ -11,6 +11,7 @@ import MisConvocatorias from '@/components/MisConvocatorias.vue'
 import Participacion from '@/components/Participacion.vue'
 import AspirantesConvocatoria from '@/components/AspirantesPorConvocatoria.vue'
 import ParticipacionValidaDocs from '@/components/ParticipacionValidaDocs.vue'
+import CRUDEmpleados from '@/components/CRUDEmpleados.vue'
 //import MaterialChartCard from '@/components/MaterialChartCard.vue'
 import Dashboard from '@/views/dashboard/Dashboard.vue'
 
@@ -44,6 +45,14 @@ const routes = [
           // when /user/:id/posts is matched
           path: 'requisitos',
           component: CRUDRequisitos
+        },
+        {
+          path: 'usuarios',
+          component: CRUDEmpleados
+        },
+        {
+          path: 'dashboard',
+          component: Dashboard
         }
       ]
   },

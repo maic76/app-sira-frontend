@@ -62,10 +62,11 @@
     data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard', link:'/seguimiento/dashboard' },
+          { title: 'Dashboard', icon: 'mdi-view-dashboard', link:'/home/dashboard' },
           { title: 'Convocatorias', icon: 'mdi-image', link:'/home/convocatorias' },
           { title: 'Programas Educativos', icon: 'mdi-help-box', link :'/home/peducativos' },
           { title: 'Requisitos', icon: 'mdi-help-box', link :'/home/requisitos' },
+           { title: 'Usuarios', icon: 'mdi-help-box', link :'/home/usuarios' },
          ],
         right: null,
         drawer:null
