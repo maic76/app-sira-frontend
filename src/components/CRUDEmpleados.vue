@@ -32,7 +32,7 @@
                     md="12"
                   >
                     <v-text-field
-                      v-model="editedItem.nombre"
+                      v-model="editedItem.empleado.nombre"
                       label="Nombre"
                     ></v-text-field>
                   </v-col>
@@ -42,7 +42,7 @@
                     md="12"
                   >
                     <v-text-field
-                      v-model="editedItem.apellido"
+                      v-model="editedItem.empleado.apellido"
                       label="Apellido"
                     ></v-text-field>
                   </v-col>
@@ -80,7 +80,7 @@
                     md="12"
                   >
                     <v-text-field
-                      v-model="editedItem.clave"
+                      v-model="editedItem.empleado.clave"
                       label="Clave de Empleado"
                     ></v-text-field>
                   </v-col>
@@ -93,7 +93,7 @@
 
                    <v-select
                         :items="roles"
-                         v-model="editedItem.rol"
+                         v-model="editedItem.authorities[0].authority"
                          item-text="rolText"
                          item-value="rol"
                         label="Rol"
@@ -183,12 +183,12 @@ import jwt_decode from "jwt-decode";
       },
       headers: [
         {text: 'No.', value:'id', class:'indigo lighten-1 white--text text-center'},
-        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo lighten-1 white--text text-center'},
-        { text: 'Apellido', value: 'apellido', width:'300', class: 'indigo lighten-1 white--text'},
+        { text: 'Nombre ', align: 'start', sortable: false, value: 'empleado.nombre', class: 'indigo lighten-1 white--text text-center'},
+        { text: 'Apellido', value: 'empleado.apellido', width:'150', class: 'indigo lighten-1 white--text'},
         { text: 'Email', value: 'email', class: 'indigo lighten-1 white--text' },
-        { text: 'Clave', value: 'clave', class: 'indigo lighten-1 white--text' },
-        { text: 'Rol', value: 'rol', class: 'indigo lighten-1 white--text' },
-        { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo lighten-1 white--text' },
+        { text: 'Clave', value: 'empleado.clave', class: 'indigo lighten-1 white--text' },
+        { text: 'Rol', value: 'authorities[0].authority', class: 'indigo lighten-1 white--text' },
+        { text: 'Acciones', value: 'actions', width:'200', sortable: false, class: 'indigo lighten-1 white--text' },
       ],
       menu: false,
       empleados: [],
@@ -204,21 +204,26 @@ import jwt_decode from "jwt-decode";
       editedIndex: -1,
       editedItem: {
         id:'',
-        nombre: '',
-        apellido: '',
+        empleado:{
+          nombre: '',
+          apellido: '',
+          clave: '',
+        },        
         email: '',
         password:'',      
-        clave: '',
-        rol: '',
+        authorities:[{authority:''}]
+       
       },
       defaultItem: {
         id:'',
-        nombre: '',
-        apellido: '',
-        email: '',   
-        password:'',       
-        clave: '',
-        rol: '',
+        empleado:{
+          nombre: '',
+          apellido: '',
+          clave: '',
+        },        
+        email: '',
+        password:'',      
+        authorities:[{authority:''}]
       },
 
       roles: [{ rolText:'SEGUIMIENTO', rol:'SEGUIMIENTO'}, { rolText:'ADMINISTRADOR', rol:'ADMIN'}]
@@ -254,19 +259,19 @@ import jwt_decode from "jwt-decode";
                     headers: { Authorization: `Bearer ${token}` }
                   };
 
-     /* this.axios.get("/api/peducativos",           
+      this.axios.get("/sira/usuarios/empleados",           
                    config
                   )
                 .then(response => {
                    console.log(response);
                    console.log(response.headers.authorization);
                    //actualizamos la vista
-                     this.programas=response.data;   
+                     this.empleados=response.data;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;
                   console.error("There was an error!", error);
-                });                   */
+                });                   
 
       },
 
@@ -277,7 +282,7 @@ import jwt_decode from "jwt-decode";
         this.editedItem = Object.assign({}, item)
         this.dialog = true*/
 
-        this.editedIndex = this.programas.indexOf(item)
+        this.editedIndex = this.empleados.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialog = true
       },
@@ -342,13 +347,14 @@ import jwt_decode from "jwt-decode";
         //TODO ....
            let token = localStorage.getItem('token');
 
-         /*  let bodyParams = { 
+           let bodyParams = { 
                     nombre: this.editedItem.nombre,                   
-                    descripcion: this.editedItem.descripcion,
+                    apellido: this.editedItem.apellido,
+                    email: this.editedItem.email,
+                    password: this.editedItem.password,
                     clave: this.editedItem.clave,
-                    vigencia: this.editedItem.vigencia,
-                    abreviatura: this.editedItem.abreviatura 
-                  };*/
+                    rol : this.editedItem.rol
+                  };
 
            let config = {
                        headers: { Authorization: `Bearer ${token}` }
@@ -382,7 +388,7 @@ import jwt_decode from "jwt-decode";
                 console.log("el token es "+localStorage.getItem('token'));        
                 
 
-                      /*this.axios.post("/api/peducativos",                  
+                      this.axios.post("/sira/usuarios/empleados",                  
                            bodyParams,
                            config
                           )
@@ -396,7 +402,7 @@ import jwt_decode from "jwt-decode";
                         .catch(error => {
                           this.errorMessage = error.message;
                           console.error("There was an error!", error);
-                        });     */                               
+                        });                                  
                 }                              
            this.close()              
       },
