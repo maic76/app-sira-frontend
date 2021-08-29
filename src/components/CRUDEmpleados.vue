@@ -127,7 +127,7 @@
 
         <v-dialog v-model="dialogDelete" max-width="500px">
           <v-card>
-            <v-card-title class="text-h5">¿Estas seguro que deseas eliminar ?</v-card-title>
+            <v-card-title class="text-h5">¿Estas seguro que deseas deshabilitar el usuario ?</v-card-title>
             <v-card-actions>
               <v-spacer></v-spacer>
               <v-btn color="blue darken-1" text @click="closeDelete">Cancel</v-btn>
@@ -137,11 +137,13 @@
           </v-card>
         </v-dialog>
 
+
       </v-toolbar>
     </template>
 
     <template v-slot:item.actions="{ item }">
       <v-icon
+      v-if="item.enabled"
         color="teal"
         class="mr-2"
         @click="editItem(item)"
@@ -149,10 +151,19 @@
         mdi-pencil
       </v-icon>
       <v-icon
+       v-if="item.enabled"
         color="red"
         @click="deleteItem(item)"
       >
-        mdi-delete
+        mdi-account-multiple-remove-outline
+      </v-icon>
+
+      <v-icon
+       v-else="item.enabled"
+        color="green"
+        @click="enableUser(item)"
+      >
+        mdi-account-multiple-remove-outline
       </v-icon>
     </template>
 
@@ -164,6 +175,16 @@
         Reiniciar
       </v-btn>
     </template>
+
+      <template v-slot:item.enabled="{ item }">
+            <v-chip
+              :color="getColor(item.enabled)"
+              dark
+             >
+                 <span v-if="item.enabled">SI</span>
+                 <span v-else>NO</span>
+            </v-chip>
+          </template>
   </v-data-table>
 </template>
 <script>
@@ -188,6 +209,7 @@ import jwt_decode from "jwt-decode";
         { text: 'Email', value: 'email', class: 'indigo lighten-1 white--text' },
         { text: 'Clave', value: 'empleado.clave', class: 'indigo lighten-1 white--text' },
         { text: 'Rol', value: 'authorities[0].authority', class: 'indigo lighten-1 white--text' },
+        { text: 'Habilitado', value: 'enabled', class: 'indigo lighten-1 white--text' },
         { text: 'Acciones', value: 'actions', width:'200', sortable: false, class: 'indigo lighten-1 white--text' },
       ],
       menu: false,
@@ -291,39 +313,88 @@ import jwt_decode from "jwt-decode";
         /*this.editedIndex = this.programas.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true*/
-        this.editedIndex = item.id
+         this.editedIndex = this.empleados.indexOf(item)
         this.editedItem = Object.assign({}, item)
         this.dialogDelete = true
       },
 
-      deleteItemConfirm () {
-       // this.programas.splice(this.editedIndex, 1)
-           let token = localStorage.getItem('token');
+      enableUser(item){
+          console.log('habilitar usuario'+item.empleado.name)
+
+           this.editedIndex = this.empleados.indexOf(item)
+           this.editedItem = Object.assign({}, item)
+
+            let token = localStorage.getItem('token');
 
            let bodyParams = { 
-                   
+                    nombre: this.editedItem.empleado.nombre,                   
+                    apellido: this.editedItem.empleado.apellido,
+                    email: this.editedItem.email,
+                    password: this.editedItem.password,
+                    clave: this.editedItem.empleado.clave,
+                    rol : this.editedItem.authorities[0].authority
                   };
 
-           let config = {
-                       headers: { Authorization: `Bearer ${token}` }
-                     };
-
-      /*    let indice = this.editedIndex;
-             this.axios.delete("/api/peducativos/"+this.editedIndex,                  
+                    this.axios.patch("/sira/usuarios/empleados",                  
+                           bodyParams,
                            config
                           )
                         .then(response => {
                            console.log(response);
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
-                           console.log("programa eliminado ->"+response);                              
-                              this.programas = this.programas.filter(p => p.id != indice)
+                              console.log("empleado editado ->"+response.data); 
+                                this.initialize()                              
+                              //Object.assign(this.programas[indice], response.data);
+                          })
+                        .catch(error => {
+                          this.errorMessage = error.message;
+                          console.error("There was an error!", error);
+                        });     
+
+
+
+      },
+
+      deleteItemConfirm () {
+       // this.programas.splice(this.editedIndex, 1)
+           let token = localStorage.getItem('token');
+
+           let data = { 
+                    nombre: this.editedItem.empleado.nombre,                   
+                    apellido: this.editedItem.empleado.apellido,
+                    email: this.editedItem.email,
+                    password: this.editedItem.password,
+                    clave: this.editedItem.empleado.clave,
+                    rol : this.editedItem.authorities[0].authority
+                  };
+
+           let config = {
+                        data,
+                       headers: { Authorization: `Bearer ${token}` }
+                     };
+
+                     console.log(config)
+
+          let indice = this.editedIndex;
+             this.axios.delete("/sira/usuarios/empleados",
+                                    
+                           config
+                              
+                          )
+                        .then(response => {
+                           console.log(response);
+                           //onsole.log(response.headers.authorization);
+                              //actualizamos la vista
+                           console.log("respuesta ->"+response);                              
+                             // this.programas = this.programas.filter(p => p.id != indice)
+                             this.initialize();
                               this.closeDelete()
                           })
                         .catch(error => {
                           this.errorMessage = error.message;
                           console.error("There was an error!", error);
-                        });     */
+                        });     
       
       },
 
@@ -343,17 +414,22 @@ import jwt_decode from "jwt-decode";
         })
       },
 
+       getColor (enabled) {
+          if (!enabled) return 'red'
+          else if (enabled) return 'green'
+         },
+
       save () {
         //TODO ....
            let token = localStorage.getItem('token');
 
            let bodyParams = { 
-                    nombre: this.editedItem.nombre,                   
-                    apellido: this.editedItem.apellido,
+                    nombre: this.editedItem.empleado.nombre,                   
+                    apellido: this.editedItem.empleado.apellido,
                     email: this.editedItem.email,
                     password: this.editedItem.password,
-                    clave: this.editedItem.clave,
-                    rol : this.editedItem.rol
+                    clave: this.editedItem.empleado.clave,
+                    rol : this.editedItem.authorities[0].authority
                   };
 
            let config = {
@@ -365,7 +441,7 @@ import jwt_decode from "jwt-decode";
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
-                     /*   this.axios.put("/api/peducativos/"+this.editedItem.id,                  
+                        this.axios.put("/sira/usuarios/empleados",                  
                            bodyParams,
                            config
                           )
@@ -373,14 +449,15 @@ import jwt_decode from "jwt-decode";
                            console.log(response);
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
-                              console.log("programa editado ->"+response.data);                              
-                              Object.assign(this.programas[indice], response.data);
+                              console.log("empleado editado ->"+response.data); 
+                                this.initialize()                              
+                              //Object.assign(this.programas[indice], response.data);
                           })
                         .catch(error => {
                           this.errorMessage = error.message;
                           console.error("There was an error!", error);
                         });     
-                        */
+                        
                 }
              else {  //si es nuevo
 
@@ -397,7 +474,8 @@ import jwt_decode from "jwt-decode";
                            //onsole.log(response.headers.authorization);
                               //actualizamos la vista
                               console.log("programa editado ->"+response.data);
-                               this.programas.push(response.data)      
+                               //this.empleados.push(response.data)     
+                               this.initialize() 
                           })
                         .catch(error => {
                           this.errorMessage = error.message;

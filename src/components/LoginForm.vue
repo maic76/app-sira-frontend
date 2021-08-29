@@ -30,6 +30,19 @@
    					 
 				</v-card-actions> -->
 		</v-card>
+
+		 <v-dialog v-model="dialogErrors" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">{{dialogError}}</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="!dialogErrors">OK</v-btn>
+          
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
 	</v-main>
 </template>
 
@@ -39,6 +52,8 @@
  export default {
  
 	   data: () => ({
+	   		  dialogError:'',
+	   		  dialogErrors: false,
 		      valid: true,
 		      password: '',
 		      passwordRules: [
@@ -65,14 +80,17 @@
 								    password: this.password 
 								  })
 						    .then(response => {
+						    		console.log("cae en el response")
 						    	 console.log(response);
 						    	 console.log(response.headers.authorization);
 		      					localStorage.setItem('token',response.headers.authorization.replace('Bearer ',''));	
 		      					this.$router.push('/home');					    	
 						    	})
 						    .catch(error => {
-						      this.errorMessage = error.message;
-						      console.error("There was an error!", error);
+						    	console.error("There was an error!", error);
+						    	this.dialogErrors=true
+						      this.dialogError = error.response.data.mensaje;
+						      
 						    });		       		
 
 			      }
