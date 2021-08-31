@@ -54,6 +54,7 @@
 			    :items="participaciones"
 			    class="elevation-1 "
           no-data-text="No se encontraron participantes en esta convocatoria"
+          custom-sort="(items: any[], sortBy: string[], sortDesc: boolean[], locale: string, customSorters?: Record<string, compareFn>) => locale:es"
 			  >
 
          <template v-slot:item.aspirante.nombre="{ item }">
@@ -76,7 +77,7 @@
                     class="mr-2"
                     @click="verParticipacion(item)"
                   >
-                    mdi-eye
+                    mdi-folder-eye
                   </v-icon>
             </template>
 

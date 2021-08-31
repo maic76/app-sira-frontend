@@ -1,5 +1,5 @@
 <template>
-  <v-data-table :headers="headers" :items="requisitos" sort-by="descripcion"  class="elevation-10"  :header-props="headerProps">
+  <v-data-table :headers="headers" :items="requisitos" sort-by="descripcion"  class="elevation-10"  :header-props="headerProps" sort-by-text="Ordenar por" >
      <template v-slot:item.esDocumento="{ item }">
          <v-icon
         color="primary"
@@ -12,7 +12,7 @@
         <span>{{ item.esCambiante==true?"SI":"NO" }}</span>
      </template>
     <template v-slot:top>
-      <v-toolbar flat color="indigo accent-3 white--text"  >
+      <v-toolbar flat color="indigo darken-2 white--text"  >
         <v-toolbar-title >Requisitos</v-toolbar-title>
         <v-divider
           class="mx-4"
@@ -27,7 +27,7 @@
             </v-btn>
           </template>
           <v-card>
-            <div class="indigo accent-3 text-center white--text">
+            <div class="indigo darken-2 text-center white--text">
             <v-card-title>
               <span class="text-h5">{{ formTitle }}</span>
             </v-card-title>
@@ -166,13 +166,13 @@
         sortByText: "Ordenar por"
       },
       headers: [
-        {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
-        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
-        { text: 'Tipo', value: 'tipo', width:'300', class: 'indigo accent-2 white--text'},
-        { text: 'Descripcion', value: 'descripcion', class: 'indigo accent-2 white--text' },
-        { text: 'Documento', value: 'esDocumento', class: 'indigo accent-2 white--text' },
-        { text: 'Cambiante', value: 'esCambiante', class: 'indigo accent-2 white--text' },
-        { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
+        {text: 'No.', value:'id', class:'indigo lighten-1 white--text text-center'},
+        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo lighten-1 white--text  text-center'},
+        { text: 'Tipo', value: 'tipo', width:'300', class: 'indigo lighten-1 white--text '},
+        { text: 'Descripcion', value: 'descripcion', class: 'indigo lighten-1 white--text ' },
+        { text: 'Documento', value: 'esDocumento', class: 'indigo lighten-1 white--text ' },
+        { text: 'Cambiante', value: 'esCambiante', class: 'indigo lighten-1 white--text ' },
+        { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo lighten-1 white--text ' },
       ],
       requisitos: [],
       editedIndex: -1,

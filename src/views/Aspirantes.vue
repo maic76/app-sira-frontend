@@ -62,8 +62,8 @@
     data () {
       return {
         items: [
-          { title: 'Convocatorias Disponibles', icon: 'mdi-help-box', link :'/aspirantes/convocatorias' },
-          { title: 'Mis participaciones', icon: 'mdi-help-box', link :'/aspirantes/misparticipaciones' }
+          { title: 'Convocatorias Disponibles', icon: 'mdi-bullhorn-outline', link :'/aspirantes/convocatorias' },
+          { title: 'Mis participaciones', icon: 'mdi-hand-right', link :'/aspirantes/misparticipaciones' }
          ],
         right: null,
         drawer:null

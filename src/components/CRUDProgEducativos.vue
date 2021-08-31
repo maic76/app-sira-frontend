@@ -5,7 +5,11 @@
      </template>
     <template v-slot:top>
       <v-toolbar flat color="indigo darken-2 white--text"  >
-        <v-toolbar-title class="text-h5">Programas Educativos</v-toolbar-title>
+        <v-toolbar-title class="text-h5">
+        
+                  <v-icon dark large>mdi-newspaper-variant-outline</v-icon>
+               
+              Programas Educativos</v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -14,7 +18,7 @@
         <v-spacer></v-spacer>
         <v-dialog v-model="dialog" max-width="500px" >
           <template v-slot:activator="{ on, attrs }">
-            <v-btn  color="indigo accent-3"  dark  class="mb-2" v-bind="attrs"  v-on="on" >
+            <v-btn  color="primary"  dark  class="mb-2" v-bind="attrs"  v-on="on" >
              Crear Nuevo
             </v-btn>
           </template>
@@ -270,7 +274,7 @@ import jwt_decode from "jwt-decode";
                    console.log(response);
                    console.log(response.headers.authorization);
                    //actualizamos la vista
-                     this.programas=response.data;   
+                     this.programas=response.data.peducativos;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;

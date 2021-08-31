@@ -10,8 +10,11 @@
         <span>{{ new Date(item.fechaExamen).toLocaleString("es-MX",{dateStyle:"medium"}) }}</span>
      </template>
     <template v-slot:top>
-      <v-toolbar flat color="indigo accent-3 white--text fix"  >
-        <v-toolbar-title class="fix">Convocatorias</v-toolbar-title>
+      <v-toolbar flat color="indigo darken-2 white--text fix"  >
+        <v-toolbar-title class="fix">
+           <v-icon dark large>mdi-bullhorn-outline</v-icon>
+         Convocatorias
+       </v-toolbar-title>
         <v-divider
           class="mx-4"
           inset
@@ -26,7 +29,7 @@
             </v-btn>
           </template>
           <v-card>
-            <div class="indigo accent-3 text-center white--text">
+            <div class="indigo darken-2 text-center white--text">
             <v-card-title>
               <span class="text-h5">{{ formTitle }}</span>
             </v-card-title>
@@ -228,14 +231,14 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary"  dark  class="mb-2"
+              <v-btn color="indigo darken-2"  dark  class="mb-2"
                
                 @click="close"
               >
                 Cancelar
               </v-btn>
               <v-btn
-               color="primary"  dark  class="mb-2"
+               color="indigo darken-2"  dark  class="mb-2"
                 @click="save"
               >
                 Guardar
@@ -459,15 +462,15 @@
         sortByText: "Ordenar por"
       },
       headers: [
-        {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
-        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo accent-2 white--text text-center'},
-        { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo accent-2 white--text'},
-        { text: 'Fecha Inicio', value: 'fechaInicio', class: 'indigo accent-2 white--text' },
-        { text: 'Fecha Término', value: 'fechaTermino', class: 'indigo accent-2 white--text' },
-         { text: 'Fecha Examen', value: 'fechaExamen', class: 'indigo accent-2 white--text' },
-        { text: 'Programa Educativo', value: 'programaEducativo.nombre', class: 'indigo accent-2 white--text' },
-        { text: 'Cupo', value: 'cantAspirantes', class: 'indigo accent-2 white--text' },
-        { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo accent-2 white--text' },
+        {text: 'No.', value:'id', class:'indigo lighten-1 white--text text-center'},
+        { text: 'Nombre ', align: 'start', sortable: false, value: 'nombre', class: 'indigo lighten-1 white--text text-center'},
+        { text: 'Descripcion', value: 'descripcion', width:'300', class: 'indigo lighten-1 white--text '},
+        { text: 'Fecha Inicio', value: 'fechaInicio', class: 'indigo lighten-1 white--text ' },
+        { text: 'Fecha Término', value: 'fechaTermino', class: 'indigo lighten-1 white--text ' },
+         { text: 'Fecha Examen', value: 'fechaExamen', class: 'indigo lighten-1 white--text ' },
+        { text: 'Programa Educativo', value: 'programaEducativo.nombre', class: 'indigo lighten-1 white--text ' },
+        { text: 'Cupo', value: 'cantAspirantes', class: 'indigo lighten-1 white--text ' },
+        { text: 'Acciones', value: 'actions', sortable: false, class: 'indigo lighten-1 white--text ' },
       ],
       convocatorias: [],
       editedIndex: -1,
@@ -506,12 +509,12 @@
       idRequisito: '',
 
        headersRequisitos: [
-        {text: 'No.', value:'id', class:'indigo accent-2 white--text text-center'},
-        { text: 'Requisito ', align: 'start', sortable: false, value: 'requisito.nombre', class: 'indigo accent-2 white--text text-center'},
-        { text: 'Indispensable', value: 'indispensable', class: 'indigo accent-2 white--text' },
-        { text: 'Cant.', value: 'cantidad', class: 'indigo accent-2 white--text' },
-        { text: 'Original.', value: 'original', class: 'indigo accent-2 white--text' },
-         { text: 'reqid', value: 'requisito.id', class: 'indigo accent-2 white--text' },
+        {text: 'No.', value:'id', class:'indigo lighten-1 white--text text-center'},
+        { text: 'Requisito ', align: 'start', sortable: false, value: 'requisito.nombre', class: 'indigo lighten-1 white--text text-center'},
+        { text: 'Indispensable', value: 'indispensable', class: 'indigo lighten-1 white--text' },
+        { text: 'Cant.', value: 'cantidad', class: 'indigo lighten-1 white--text' },
+        { text: 'Original.', value: 'original', class: 'indigo lighten-1 white--text' },
+         { text: 'reqid', value: 'requisito.id', class: 'indigo lighten-1 white--text' },
       ],
 
       formTitleRequisitos: 'Requisitos de  '
@@ -554,7 +557,7 @@
                    console.log(response);
                    //console.log(response.headers.authorization);
                    //actualizamos la vista
-                     this.convocatorias=response.data;   
+                     this.convocatorias=response.data.convocatorias;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;
@@ -566,7 +569,7 @@
                    )
                   .then(response => {
                       console.log(response.data);
-                      this.programas = response.data;
+                      this.programas = response.data.peducativos;
                       
                   })
 

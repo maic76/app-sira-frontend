@@ -62,7 +62,7 @@
     data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-help-box', link :'/seguimiento/dashboard' },
+          { title: 'Dashboard', icon: 'mdi-monitor-dashboard', link :'/seguimiento/dashboard' },
           
          ],
         right: false,

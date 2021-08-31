@@ -62,11 +62,11 @@
     data () {
       return {
         items: [
-          { title: 'Dashboard', icon: 'mdi-view-dashboard', link:'/home/dashboard' },
-          { title: 'Convocatorias', icon: 'mdi-image', link:'/home/convocatorias' },
-          { title: 'Programas Educativos', icon: 'mdi-help-box', link :'/home/peducativos' },
-          { title: 'Requisitos', icon: 'mdi-help-box', link :'/home/requisitos' },
-           { title: 'Usuarios', icon: 'mdi-help-box', link :'/home/usuarios' },
+          { title: 'Dashboard', icon: 'mdi-monitor-dashboard', link:'/home/dashboard' },
+          { title: 'Convocatorias', icon: 'mdi-bullhorn-outline', link:'/home/convocatorias' },
+          { title: 'Programas Educativos', icon: 'mdi-newspaper-variant-outline', link :'/home/peducativos' },
+          { title: 'Requisitos', icon: 'mdi-playlist-check', link :'/home/requisitos' },
+           { title: 'Usuarios LANIA', icon: 'mdi-account-multiple-plus', link :'/home/usuarios' },
          ],
         right: null,
         drawer:null
