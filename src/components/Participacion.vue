@@ -18,6 +18,20 @@
                               Entregados: {{entregados}} de {{total}}
                           </v-chip>
                      </v-card-subtitle>
+                     
+                       <v-card-subtitle class="font-weight-regular white--text fix">
+                          
+                       <v-row>
+                        <v-col cols="12">
+                       
+                           <v-alert class="text-wrap white--text" color="primary">
+                            Tu entrega de documentos ha sido validada y completada, solo resta que presentes tu examen en caso de ser requisito en la convocatoria.   
+                            </v-alert>                        
+                      
+                        </v-col>
+                     </v-row>
+                        
+                     </v-card-subtitle>
             </div>
              <v-avatar
                   class="ma-3"
@@ -129,7 +143,7 @@
               >
                 Declinar participación
               </v-btn> -->
-               <v-btn color="green"  dark  class="mb-2 "
+               <v-btn color="indigo darken-2"  dark  class="mb-2 "
                
                 @click="$router.go(-1)"
               >

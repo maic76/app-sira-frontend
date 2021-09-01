@@ -125,13 +125,13 @@
          <v-card-actions class="text-center" >
               <v-spacer></v-spacer>
               <div >
-              <v-btn color="green"  dark  class="mb-2 "
+              <v-btn color="indigo darken-2"  dark  class="mb-2 "
                
                 @click="registrarParticipacion(convocatoriaR)"
               >
                 Registrar participación
               </v-btn>
-               <v-btn color="green"  dark  class="mb-2 "
+               <v-btn color="indigo darken-2"  dark  class="mb-2 "
                
                 @click="dialog=false"
               >
@@ -161,7 +161,7 @@
 
          
           <v-btn
-            color="green darken-1"
+            color="indigo darken-2"
             text
             @click="dialogOK = false" 
           > <!--- Aquí se puede redireccionar a las participaciones-->
@@ -281,7 +281,7 @@
                    console.log(response);
                    //console.log(response.headers.authorization);
                    //actualizamos la vista
-                     this.convocatorias=response.data;   
+                     this.convocatorias=response.data.convocatorias;   
                   })
                 .catch(error => {
                   this.errorMessage = error.message;

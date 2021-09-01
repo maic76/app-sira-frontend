@@ -62,7 +62,7 @@
         <v-card-actions>
           <v-btn
             
-            color="green white--text"
+            color="indigo darken-2 white--text"
             @click="verParticipacion(participacion)"
           >
             Ver detalle
@@ -80,9 +80,7 @@
       >
       <v-card-title class="indigo darken-4 white--text ">
      
-          <p class="text-h5 white--text fix">
-            Mis Participaciones
-          </p>
+          
          
       </v-card-title>
         <v-card-text class="mt-2">
@@ -161,7 +159,8 @@
 
         getColorStatus (estatus) {
           if (estatus=='subir requisitos' || estatus == 'en espera de documentos') return 'red darken-1'
-          else return 'indigo accent-2'
+          else if(estatus=='en validación') return 'orange darken-2'
+           else return 'green'
          },
     }
 

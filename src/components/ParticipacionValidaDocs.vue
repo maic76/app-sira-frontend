@@ -10,6 +10,14 @@
                    
                     >{{tituloProg}}</v-card-title>  
                     <v-card-subtitle class="font-weight-regular white--text">{{tituloConv}}</v-card-subtitle>
+                      <v-card-subtitle class="font-weight-regular white--text"> <v-chip
+                            :color="getColorStatus(total,entregados,validados)"
+                            dark
+                           >
+                              Entregados: {{entregados}} - 
+                              Validados : {{validados}} de {{entregados}}
+                          </v-chip>
+                        </v-card-subtitle>
             </div>
              <v-avatar
                   class="ma-3"
@@ -106,7 +114,7 @@
               <v-spacer></v-spacer>
               <div >
              
-               <v-btn color="primary"  dark  class="mb-2 "
+               <v-btn color="indigo darken-2"  dark  class="mb-2 "
                
                @click="$router.go(-1)"
               >
@@ -114,7 +122,22 @@
               </v-btn>
             </div>
             </v-card-actions>
+
+             <v-dialog v-model="dialogCompletada" max-width="500px">
+          <v-card>
+            <v-card-title class="text-h5">{{mensajeCompletada}}</v-card-title>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn color="blue darken-1" text @click="closeDialog()">OK</v-btn>
+          
+              <v-spacer></v-spacer>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+
         </v-card>
+
+        
 </template>
 <script type="text/javascript">
 	
@@ -130,6 +153,9 @@
 		      entregados: 2,
           idParticipacion: '',
           requisitoConvocatoria: {indispensable: true},
+          validados: 0,
+          dialogCompletada: false,
+          mensajeCompletada: '',
 
 	 /*  headers: [
           {
@@ -157,12 +183,12 @@
           { text: 'Original/copia', value: 'requisitoConvocatoria.original', class: 'indigo darken-2 white--text' },
           { text: 'Cantidad', value: 'requisitoConvocatoria.cantidad', class: 'indigo darken-2 white--text' },
           { text: 'Indispensable', value: 'requisitoConvocatoria.indispensable', class: 'indigo darken-2 white--text' },
-          { text: 'Ver ', value: 'rutaArchivo', class: 'indigo darken-2 white--text' },
+          { text: 'Ve Doc. ', value: 'rutaArchivo', class: 'indigo darken-2 white--text' },
           { text: 'Validar Doc', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
         ],
 
         requisitosPart : [
-        		{
+        		/*{
         			name: 'Certificado de Licenciatura',
         			cantidad: 2,
         			original: 'ambos',
@@ -188,7 +214,7 @@
         			entregado: false,
               validado: false,
               documento: ''
-        		}
+        		}*/
         ],
 
 		}),
@@ -227,11 +253,14 @@
                          this.nombreAspirante = response.data.participacion.aspirante.nombre+' '+response.data.participacion.aspirante.apellido
                          this.escuela = response.data.participacion.aspirante.escuela
                          this.noWhatsapp = response.data.participacion.aspirante.noWhatsapp
+                         this.validados = response.data.validados
+                                     
+                         
 
 
                       })
                     .catch(error => {
-                      this.errorMessage = error.message;
+                      //this.errorMessage = error.message;
                       console.error("There was an error!", error);
                     });  
 
@@ -249,14 +278,55 @@
           else return 'green'
        },
 
+     closeDialog(){
+        
+        this.dialogCompletada= false
+      },
+
        verDocumento(item){
         //let route = this.$router.resolve({ path: item.documento });
          window.open(item);
        },
 
+       getColorStatus (total,entregados,validados) {
+          if (total>validados) return 'red'
+          else return 'green'
+         },
+
        validarDocumento(item){
 
-        alert("aca se validará el documento "+item)
+        console.log("aca se validará el documento "+item.id + " el id de la participacion es "+this.idParticipacion + " el validado es ->"+item.validado)
+
+         let token = localStorage.getItem('token');
+          const fd = new FormData();
+          if(!item.validado)
+          fd.append('validado',true)
+          else
+            fd.append('validado',false)
+
+          let config = {
+                       headers: { Authorization: `Bearer ${token}` }
+                      };
+
+         this.axios.patch('/api/participaciones/'+this.idParticipacion+ '/prc/'+item.id,
+                      fd,
+                      config,                      
+                      ).then(response => {
+                                 console.log(response);
+                          if(response.data.participacion.estatus=='completada'){
+                             
+                              this.mensajeCompletada=response.data.mensajeCompletada
+                               this.dialogCompletada=true
+                          }        
+                                 this.initialize();
+
+                      }).catch(error => {
+                          //this.errorMessage= 
+                          console.error("Hubo un error", error);
+                      });             
+
+
+
        }
 
     	},
