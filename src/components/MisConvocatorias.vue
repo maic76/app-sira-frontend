@@ -117,7 +117,16 @@
 
    export default {
     data: () => ({
-          participaciones:[],
+
+          participaciones:[
+            {
+                convocatoria:{
+                    programaEducativo:{
+                      abreviatura: ''
+                    }
+                }
+            
+          }],
           total:'',
           entregados:''
     }),

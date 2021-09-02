@@ -24,7 +24,7 @@
                        <v-row>
                         <v-col cols="12">
                        
-                           <v-alert class="text-wrap white--text" color="primary">
+                           <v-alert v-if='estatus=="completada"' class="text-wrap white--text" color="primary">
                             Tu entrega de documentos ha sido validada y completada, solo resta que presentes tu examen en caso de ser requisito en la convocatoria.   
                             </v-alert>                        
                       
@@ -166,6 +166,7 @@
 		      total: 5,
 		      entregados: 2,
           idParticipacion: '',
+          estatus: '',
 
 	   headers: [
           {
@@ -223,6 +224,7 @@
                      this.total=response.data.total
                      this.entregados=response.data.entregados
                      this.idParticipacion = response.data.participacion.id
+                     this.estatus = response.data.participacion.estatus
 
 
 
