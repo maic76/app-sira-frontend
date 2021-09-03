@@ -6,12 +6,20 @@
 				<v-form ref="loginForm" v-model="valid" lazy-validation  >		  
 					 <v-row>
                         <v-col cols="12">
-                        	 <v-text-field v-model="email" :rules="emailRules" label="Dirección de Correo:" required></v-text-field>
+                        	 <v-text-field v-on:change="quitarMensaje()" v-model="email" :rules="emailRules" label="Dirección de Correo:" required></v-text-field>
                         </v-col>
 				   		 <v-col cols="12">
 				   		 	<v-text-field v-model="password" :counter="6" :rules="passwordRules" label="Contraseña:" type="password" required></v-text-field> 
 				   		 </v-col>
 				   		 <v-spacer></v-spacer>
+				   		 <v-alert
+						      border="top"
+						      color="red lighten-2"
+						      dark
+						      v-if="mensaje!=''"
+						    >
+						     {{mensaje}}
+						    </v-alert>
                          <v-col class="d-flex" cols="12" sm="3" xsm="12" align-end>
                              <v-btn x-large block :disabled="!valid" color="success" @click="validate"> Ingresar </v-btn>
                         </v-col>				    
@@ -31,7 +39,7 @@
 				</v-card-actions> -->
 		</v-card>
 
-		 <v-dialog v-model="dialogErrors" max-width="500px">
+	<!-- 	 <v-dialog v-model="dialogErrors" max-width="500px">
           <v-card>
             <v-card-title class="text-h5">{{dialogError}}</v-card-title>
             <v-card-actions>
@@ -42,18 +50,19 @@
             </v-card-actions>
           </v-card>
         </v-dialog>
-
+ -->
 	</v-main>
 </template>
 
 <script type="text/javascript">
+	import { mapActions } from "vuex";
 		import {axios} from "axios";
+	
 
  export default {
  
 	   data: () => ({
-	   		  dialogError:'',
-	   		  dialogErrors: false,
+	   		  mensaje: '',
 		      valid: true,
 		      password: '',
 		      passwordRules: [
@@ -71,6 +80,9 @@
 		    }),
 
 		    methods: {
+
+		    	...mapActions(['guardarUsuario']),
+
 		      validate () {
 		         if (this.$refs.loginForm.validate()) {
 			        // submit form to server/API here...
@@ -83,13 +95,16 @@
 						    		console.log("cae en el response")
 						    	 console.log(response);
 						    	 console.log(response.headers.authorization);
-		      					localStorage.setItem('token',response.headers.authorization.replace('Bearer ',''));	
-		      					this.$router.push('/home');					    	
+						    	 const token = response.headers.authorization.replace('Bearer ','');
+		      					//localStorage.setItem('token',response.headers.authorization.replace('Bearer ',''));
+		      						this.guardarUsuario(token);
+
+		      					//this.$router.push('/home');					    	
 						    	})
 						    .catch(error => {
 						    	console.error("There was an error!", error);
 						    	this.dialogErrors=true
-						      this.dialogError = error.response.data.mensaje;
+						      this.mensaje = error.response.data.mensaje;
 						      
 						    });		       		
 
@@ -101,6 +116,10 @@
 		      resetValidation () {
 		        this.$refs.loginForm.resetValidation()
 		      },
+		      quitarMensaje(){
+		      	this.mensaje=""
+		      }
+
 		    },
  }
 

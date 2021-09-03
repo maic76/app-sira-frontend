@@ -15,6 +15,8 @@ import CRUDEmpleados from '@/components/CRUDEmpleados.vue'
 //import MaterialChartCard from '@/components/MaterialChartCard.vue'
 import Dashboard from '@/views/dashboard/Dashboard.vue'
 
+import store from '../store'
+
 Vue.use(VueRouter)
 
 const routes = [
@@ -26,6 +28,7 @@ const routes = [
   {
     path: '/home',
     name: 'Home',
+    meta: {requireAdmin: true},
     component: () => import(/* webpackChunkName: "home" */ '../views/Home.vue'),
        children: [
         {
@@ -130,5 +133,28 @@ const router = new VueRouter({
   base: process.env.BASE_URL,
   routes
 })
+
+router.beforeEach((to, from, next ) =>{ 
+
+  console.log(store.state)
+
+      const rutaProtegidaAdmin = to.matched.some(record=> record.meta.requireAdmin)
+
+      if(rutaProtegidaAdmin && store.state.token ===''){
+        console.log('no tiene token')
+           next({name: 'Ingresar'})
+      }else if(rutaProtegidaAdmin && store.state.usuarioDB.authorities[0].authority != 'ADMIN'){
+         console.log('no es Admin')
+         console.log(store.state.usuarioDB.authorities[0].authority)
+            next({name: 'Ingresar'})
+      }else if(rutaProtegidaAdmin && store.state.usuarioDB.authorities[0].authority == 'ADMIN'){
+        console.log('ES Admin!!')
+          next();
+      }else{
+        console.log('otras rutas')
+        next();
+      }
+
+});
 
 export default router
