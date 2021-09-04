@@ -267,7 +267,7 @@ import jwt_decode from "jwt-decode";
                     headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/peducativos",           
+      this.axios.get("/sira/catalogos/peducativos",           
                    config
                   )
                 .then(response => {
@@ -317,7 +317,7 @@ import jwt_decode from "jwt-decode";
                      };
 
           let indice = this.editedIndex;
-             this.axios.delete("/api/peducativos/"+this.editedIndex,                  
+             this.axios.delete("/sira/catalogos/peducativos/"+this.editedIndex,                  
                            config
                           )
                         .then(response => {
@@ -372,7 +372,7 @@ import jwt_decode from "jwt-decode";
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
-                        this.axios.put("/api/peducativos/"+this.editedItem.id,                  
+                        this.axios.put("/sira/catalogos/peducativos/"+this.editedItem.id,                  
                            bodyParams,
                            config
                           )
@@ -395,7 +395,7 @@ import jwt_decode from "jwt-decode";
                 console.log("el token es "+localStorage.getItem('token'));        
                 
 
-                      this.axios.post("/api/peducativos",                  
+                      this.axios.post("/sira/catalogos/peducativos",                  
                            bodyParams,
                            config
                           )

@@ -35,6 +35,12 @@ export default new Vuex.Store({
   		commit('obtenerUsuario',payload);
   	},
 
+    cerrarSesion({commit}){
+      commit('obtenerUsuario','');
+      localStorage.removeItem('token');
+      router.push({name:'Ingresar'});
+    }
+
   },
   modules: {
   }

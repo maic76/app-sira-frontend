@@ -155,7 +155,7 @@
                         headers: { Authorization: `Bearer ${token}` }
                       };
 
-          this.axios.get("/api/convocatorias",           
+          this.axios.get("/sira/catalogos/convocatorias",           
                        config
                       )
                     .then(response => {

@@ -223,7 +223,7 @@
                     headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/requisitos",           
+      this.axios.get("/sira/catalogos/requisitos",           
                    config
                   )
                 .then(response => {
@@ -280,7 +280,7 @@
                      };
 
           let indice = this.editedIndex;
-             this.axios.delete("/api/requisitos/"+this.editedIndex,                  
+             this.axios.delete("/sira/catalogos/requisitos/"+this.editedIndex,                  
                            config
                           )
                         .then(response => {
@@ -338,7 +338,7 @@
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
-                        this.axios.put("/api/requisitos/"+this.editedItem.id,                  
+                        this.axios.put("/sira/catalogos/requisitos/"+this.editedItem.id,                  
                            bodyParams,
                            config
                           )
@@ -361,7 +361,7 @@
                 console.log("el token es "+localStorage.getItem('token'));        
                 
 
-                      this.axios.post("/api/requisitos",                  
+                      this.axios.post("/sira/catalogos/requisitos",                  
                            bodyParams,
                            config
                           )

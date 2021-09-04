@@ -39,6 +39,19 @@
       <v-app-bar-nav-icon color="white" @click="drawer = !drawer"></v-app-bar-nav-icon>
 
       <v-toolbar-title> <span class="white--text">Sistema de Registro de Aspirantes </span></v-toolbar-title>
+       <v-spacer></v-spacer>
+       <div>
+        <v-btn
+                        icon
+                        color="white"
+                        @click="cerrarSesion()"
+                      >
+             <v-icon>mdi-account-arrow-right</v-icon> 
+                         <span >Salir</span>    
+            </v-btn>
+         
+       </div>
+               
     </v-app-bar>
 
     <v-main class="indigo lighten-4">
@@ -55,6 +68,7 @@
 
 <script>
    //import CRUDProgEducativos from '@/components/CRUDProgEducativos'
+   import {mapActions} from "vuex";
  export default {
  /* components: {
       CRUDProgEducativos
@@ -72,5 +86,8 @@
         drawer:null
       }
     },
+    methods:{
+      ...mapActions(['cerrarSesion'])
+    }
   }
 </script>

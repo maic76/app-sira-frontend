@@ -158,7 +158,7 @@
                         headers: { Authorization: `Bearer ${token}` }
                       };
 
-          this.axios.get("/api/convocatorias",           
+          this.axios.get("/sira/catalogos/convocatorias",           
                        config
                       )
                     .then(response => {
@@ -174,7 +174,7 @@
                       console.error("There was an error!", error);
                     });  
 
-          this.axios.get("/api/peducativos",           
+          this.axios.get("/sira/catalogos/peducativos",           
                    config
                   )
                 .then(response => {
@@ -189,7 +189,7 @@
                   console.error("There was an error!", error);
                 });     
 
-          this.axios.get("/api/participaciones/aspirantes",           
+          this.axios.get("/sira/participaciones/aspirantes",           
                    config
                   )
                 .then(response => {

@@ -274,7 +274,7 @@
                     headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/convocatorias",           
+      this.axios.get("/sira/catalogos/convocatorias",           
                    config
                   )
                 .then(response => {
@@ -300,7 +300,7 @@
                     };
         
 
-         this.axios.get("/api/convocatorias/"+convocatoria.id+"/requisitos",
+         this.axios.get("/sira/catalogos/convocatorias/"+convocatoria.id+"/requisitos",
                    config
                    )
                   .then(response => {
@@ -328,7 +328,7 @@
                       headers: { Authorization: `Bearer ${token}` }
                     };
 
-            this.axios.post("/api/participaciones/convocatorias/"+convocatoria.id,
+            this.axios.post("/sira/participaciones/convocatorias/"+convocatoria.id,
                    bodyParams,
                    config
                    )

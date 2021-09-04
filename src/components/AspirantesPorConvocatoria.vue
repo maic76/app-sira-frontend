@@ -214,7 +214,7 @@
                    headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get(`/api/convocatorias/${this.$route.params.id}/participaciones`,           
+      this.axios.get(`/sira/catalogos/convocatorias/${this.$route.params.id}/participaciones`,           
                    config
                   )
                 .then(response => {

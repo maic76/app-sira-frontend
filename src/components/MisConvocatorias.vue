@@ -145,7 +145,7 @@
                    headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/participaciones/",           
+      this.axios.get("/sira/participaciones/",           
                    config
                   )
                 .then(response => {

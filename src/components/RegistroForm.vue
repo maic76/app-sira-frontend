@@ -12,10 +12,10 @@
                          	<v-text-field v-model="apellido" :rules="[rules.required]" label="Apellidos" maxlength="60" required></v-text-field>
                          </v-col>
                           <v-col cols="12" sm="6" md="6">
-                         	<v-text-field v-model="escuela" :rules="[rules.required]" label="Escuela de procedencia:" maxlength="40" required></v-text-field>
+                         	<v-text-field v-model="escuela"  label="Escuela de procedencia:" maxlength="40" required></v-text-field>
                          </v-col>
                           <v-col cols="12" sm="6" md="6">
-                         	<v-text-field v-model="nowhatsapp" :rules="[rules.required]" label="No. de whatsapp" maxlength="10" required></v-text-field>
+                         	<v-text-field v-model="nowhatsapp"  label="No. de whatsapp" maxlength="10" required></v-text-field>
                          </v-col>
                          <v-col cols="12">
                            <v-text-field v-model="email" :rules="emailRules" label="Correo" required></v-text-field>

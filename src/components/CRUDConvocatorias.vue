@@ -550,7 +550,7 @@
                     headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get("/api/convocatorias",           
+      this.axios.get("/sira/catalogos/convocatorias",           
                    config
                   )
                 .then(response => {
@@ -564,7 +564,7 @@
                   console.error("There was an error!", error);
                 });  
 
-      this.axios.get("/api/peducativos",
+      this.axios.get("/sira/catalogos/peducativos",
                    config
                    )
                   .then(response => {
@@ -573,7 +573,7 @@
                       
                   })
 
-         this.axios.get("/api/requisitos",
+         this.axios.get("/sira/catalogos/requisitos",
                    config
                    )
                   .then(response => {
@@ -594,7 +594,7 @@
                     };
              this.idConvocatoria = item.id
 
-          this.axios.get("/api/convocatorias/"+item.id+"/requisitos",
+          this.axios.get("/sira/catalogos/convocatorias/"+item.id+"/requisitos",
                    config
                    )
                   .then(response => {
@@ -640,7 +640,7 @@
                      };
 
           let indice = this.editedIndex;
-             this.axios.delete("/api/convocatorias/"+this.editedIndex,                  
+             this.axios.delete("/sira/catalogos/convocatorias/"+this.editedIndex,                  
                            config
                           )
                         .then(response => {
@@ -703,7 +703,7 @@
                         console.log("EL id que se actualizara en BD será > " +this.editedItem.id)
                         console.log("El indice de la tabla actualizar es >"+ this.editedIndex)
                         let indice = this.editedIndex;
-                        this.axios.put("/api/convocatorias/"+this.editedItem.id+"/peducativos/"+progEducativo,                  
+                        this.axios.put("/sira/catalogos/convocatorias/"+this.editedItem.id+"/peducativos/"+progEducativo,                  
                            bodyParams,
                            config                          
                           )
@@ -726,7 +726,7 @@
                 console.log("el token es "+localStorage.getItem('token'));        
                 
 
-                      this.axios.post("/api/convocatorias/peducativos/"+progEducativo,                  
+                      this.axios.post("/sira/catalogos/convocatorias/peducativos/"+progEducativo,                  
                            bodyParams,
                            config
                           )
@@ -759,7 +759,7 @@
                        headers: { Authorization: `Bearer ${token}` }
                      };
 
-           this.axios.post("/api/convocatorias/"+this.idConvocatoria+"/requisitos/"+this.requisito,                  
+           this.axios.post("/sira/catalogos/convocatorias/"+this.idConvocatoria+"/requisitos/"+this.requisito,                  
                            params,
                            config
                           )
@@ -811,7 +811,7 @@
                      };
 
           //let indice = this.editedIndex;
-             this.axios.delete("/api/convocatorias/"+this.idConvocatoria+"/requisitos/"+this.idRequisito+"?cantidad="+this.cantidad+"&indispensable="+this.esIndispensable+"&original="+this.original,                  
+             this.axios.delete("/sira/catalogos/convocatorias/"+this.idConvocatoria+"/requisitos/"+this.idRequisito+"?cantidad="+this.cantidad+"&indispensable="+this.esIndispensable+"&original="+this.original,                  
                            //params2,
                            config
                           )

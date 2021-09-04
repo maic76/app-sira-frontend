@@ -208,7 +208,7 @@
                    headers: { Authorization: `Bearer ${token}` }
                   };
 
-      this.axios.get(`/api/participaciones/${this.$route.params.id}`,           
+      this.axios.get(`/sira/participaciones/${this.$route.params.id}`,           
                    config
                   )
                 .then(response => {
@@ -265,7 +265,7 @@
                    headers: { Authorization: `Bearer ${token}` }
                   };
 
-          this.axios.put('/api/participaciones/'+ idParticipcion + '/prc/' +idPrc,
+          this.axios.put('/sira/participaciones/'+ idParticipcion + '/prc/' +idPrc,
                            fd,                            
                           config,
                           {
