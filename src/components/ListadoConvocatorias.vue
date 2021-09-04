@@ -334,6 +334,17 @@
                    )
                   .then(response => {
                       console.log(response.data);
+                     
+                      this.axios.post("/sira/notificaciones/convocatorias/"+convocatoria.id,
+                        bodyParams,
+                        config
+                        ).then(response=>{
+                              console.log(response.data);
+
+                        }).catch(error => { 
+                            this.errorMessage = error.message
+                            console.error("Hubo un error en el envío de correo",error);
+                          });
                      // this.requisitosConv = response.data;
                      this.openDialogOK(response.data.mensaje)
                       
