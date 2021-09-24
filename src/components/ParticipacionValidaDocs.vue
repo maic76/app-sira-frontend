@@ -18,14 +18,17 @@
                               Validados : {{validados}} de {{entregados}}
                           </v-chip>
                         </v-card-subtitle>
-            </div>
+           </div>
+            <div>
              <v-avatar
                   class="ma-3"
-                  size="100"
+           
                   tile
                 >
                   <v-img contain :src=logo></v-img>
                 </v-avatar>
+              </div>
+             
           </div>
           <v-container>
             <div class="d-flex justify-space-around ">
@@ -59,6 +62,7 @@
          <v-data-table
 
 			    :headers="headers"
+          :header-props="{ sortByText: 'Ordenar por' }"
 			    :items="requisitosPart"
 			    class="elevation-1 "
 			  >
@@ -185,6 +189,7 @@
           { text: 'Indispensable', value: 'requisitoConvocatoria.indispensable', class: 'indigo darken-2 white--text' },
           { text: 'Ve Doc. ', value: 'rutaArchivo', class: 'indigo darken-2 white--text' },
           { text: 'Validar Doc', value: 'actions', sortable: false, class: 'indigo darken-2 white--text' },
+
         ],
 
         requisitosPart : [

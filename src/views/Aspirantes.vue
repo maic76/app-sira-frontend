@@ -76,7 +76,7 @@
       return {
         items: [
           { title: 'Convocatorias Disponibles', icon: 'mdi-bullhorn-outline', link :'/aspirantes/convocatorias' },
-          { title: 'Mis participaciones', icon: 'mdi-hand-right', link :'/aspirantes/misparticipaciones' }
+          { title: 'Mis participaciones', icon: 'mdi-book-open', link :'/aspirantes/misparticipaciones' }
          ],
         right: null,
         drawer:null

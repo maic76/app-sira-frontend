@@ -298,6 +298,7 @@
                           :items="requisitosConvocatoria"
                           :items-per-page="5"
                           class="elevation-1"
+                          :header-props="headerProps"
 
                         >
                           <template v-slot:item.requisito.id="{ item }">
@@ -309,6 +310,16 @@
                                mdi-delete
                             </v-icon>     
                             </template>
+
+                            <template v-slot:item.indispensable="{ item }">
+                              <v-chip
+                                :color="getColorIndisp(item.indispensable)"
+                                dark
+                               >
+                                   <span v-if="item.indispensable">SI</span>
+                                   <span v-else>NO</span>
+                              </v-chip>
+                           </template> 
                         </v-data-table>
                       </template>
                 </v-col>
@@ -677,6 +688,12 @@
       closeRequisitos(){
           this.dialogRequisitos = false
       },
+
+       getColorIndisp(item){
+        console.log('el item'+item)
+           if (!item) return 'red'
+          else return 'green'
+       },
 
       save () {
         //TODO ....
